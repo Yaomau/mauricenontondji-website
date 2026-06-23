@@ -8,6 +8,7 @@
   --color-brand-blue: #0176cc;
   --color-brand-blue-light: #56d1f7;
   --color-brand-yellow: #fffa00;
+  --color-brand-yellow-solid: #fffa00;
   --color-brand-white: #ffffff;
 
   /* Accent — Yellow highlight */
@@ -108,6 +109,7 @@
   --neutral-950: #1a1a1a;
   --surface-bg: #0f0f0f;
   --color-brand-yellow: #e6e200;
+  --color-brand-yellow-solid: #e6e200;
   --color-accent-yellow-solid: #e6e200;
   --color-accent-wash: rgba(230, 226, 0, 0.25);
   --color-accent-wash-strong: rgba(230, 226, 0, 0.40);
