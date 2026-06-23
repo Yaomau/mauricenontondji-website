@@ -107,6 +107,10 @@
   --neutral-700: #dedfe1;
   --neutral-950: #1a1a1a;
   --surface-bg: #0f0f0f;
+  --color-brand-yellow: #e6e200;
+  --color-accent-yellow-solid: #e6e200;
+  --color-accent-wash: rgba(230, 226, 0, 0.25);
+  --color-accent-wash-strong: rgba(230, 226, 0, 0.40);
   --surface-card: #1a1a1a;
   --surface-muted: #222222;
   --text-primary: #edeff2;
