@@ -1,3 +1,8 @@
+// Ensure NEXTAUTH_SECRET exists before NextAuth is imported (Vercel production check)
+if (!process.env.NEXTAUTH_SECRET) {
+  process.env.NEXTAUTH_SECRET = 'mn-fallback-secret-change-in-vercel-env';
+}
+
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -57,7 +62,6 @@ const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET || 'mn-fallback-secret-change-in-vercel-env',
   ...(vercelUrl && { url: vercelUrl }),
 };
 
