@@ -57,7 +57,7 @@ const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'mn-fallback-secret-change-in-vercel-env',
   ...(vercelUrl && { url: vercelUrl }),
 };
 
