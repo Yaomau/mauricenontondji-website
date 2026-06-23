@@ -127,7 +127,7 @@ export default function ArticlesPage() {
               <Link
                 key={article.title}
                 href={article.slug ? `/articles/${article.slug}` : '#'}
-                className="bg-white border border-mist rounded-[2px] p-4 hover:border-brand-blue/30 transition-colors group cursor-pointer flex flex-col"
+                className="bg-card border border-mist rounded-[2px] p-4 hover:border-brand-blue/30 transition-colors group cursor-pointer flex flex-col"
               >
                 {/* Image placeholder */}
                 <div className="w-full h-[160px] bg-cloud rounded-[2px] mb-4 flex items-center justify-center overflow-hidden">

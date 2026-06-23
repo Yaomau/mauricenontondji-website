@@ -1,7 +1,9 @@
 import { db } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-// GET /api/articles/[id]
+// GET /api/articles/[id] — public (only if published, or admin)
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -12,18 +14,32 @@ export async function GET(
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
     }
+
+    // Non-published articles require auth
+    if (article.status !== 'published') {
+      const session = await getServerSession(authOptions);
+      if (!session) {
+        return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+      }
+    }
+
     return NextResponse.json(article);
   } catch {
     return NextResponse.json({ error: 'Failed to fetch article' }, { status: 500 });
   }
 }
 
-// PUT /api/articles/[id]
+// PUT /api/articles/[id] — requires auth
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+    }
+
     const { id } = await params;
     const body = await request.json();
 
@@ -66,12 +82,17 @@ export async function PUT(
   }
 }
 
-// DELETE /api/articles/[id]
+// DELETE /api/articles/[id] — requires auth
 export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+    }
+
     const { id } = await params;
     await db.article.delete({ where: { id } });
     return NextResponse.json({ success: true });

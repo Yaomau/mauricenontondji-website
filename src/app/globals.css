@@ -4,24 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Brand Colors */
+  /* Brand Colors — don't change in dark mode */
   --color-brand-blue: #0176cc;
   --color-brand-blue-light: #56d1f7;
   --color-brand-yellow: #fffa00;
   --color-brand-white: #ffffff;
-
-  /* Glassnode-style Neutrals */
-  --color-pure-black: #000000;
-  --color-obsidian: #1a1a1a;
-  --color-graphite: #333333;
-  --color-iron: #5a5a5a;
-  --color-slate: #666666;
-  --color-steel: #808080;
-  --color-fog: #a0a0a0;
-  --color-ash: #bfbfbf;
-  --color-mist: #dedfe1;
-  --color-cloud: #edeff2;
-  --color-paper: #f7f8fa;
 
   /* Accent — Yellow highlight */
   --color-accent-wash: rgba(255, 250, 0, 0.35);
@@ -33,29 +20,29 @@
   --font-oswald: 'Oswald', ui-sans-serif, system-ui, sans-serif;
   --font-roboto: 'Roboto', ui-sans-serif, system-ui, sans-serif;
 
-  /* Surfaces */
-  --color-background: var(--color-cloud);
-  --color-foreground: var(--color-pure-black);
-  --color-card: var(--brand-white);
-  --color-card-foreground: var(--color-pure-black);
-  --color-muted: var(--color-paper);
-  --color-muted-foreground: var(--color-iron);
-  --color-border: var(--color-mist);
-  --color-input: var(--color-mist);
+  /* Surfaces — resolved via CSS vars for dark mode */
+  --color-background: var(--surface-bg);
+  --color-foreground: var(--text-primary);
+  --color-card: var(--surface-card);
+  --color-card-foreground: var(--text-primary);
+  --color-muted: var(--surface-muted);
+  --color-muted-foreground: var(--text-muted);
+  --color-border: var(--border-color);
+  --color-input: var(--border-color);
   --color-ring: var(--color-brand-blue);
 
   /* Primary actions — Brand Blue */
   --color-primary: var(--color-brand-blue);
-  --color-primary-foreground: var(--brand-white);
-  --color-secondary: var(--brand-white);
-  --color-secondary-foreground: var(--color-pure-black);
+  --color-primary-foreground: var(--color-brand-white);
+  --color-secondary: var(--surface-card);
+  --color-secondary-foreground: var(--text-primary);
   --color-accent: var(--color-accent-wash);
-  --color-accent-foreground: var(--color-pure-black);
+  --color-accent-foreground: var(--text-primary);
 
   /* Layout tokens */
-  --color-popover: var(--brand-white);
-  --color-popover-foreground: var(--color-pure-black);
-  --color-destructive: #dc2626;
+  --color-popover: var(--surface-card);
+  --color-popover-foreground: var(--text-primary);
+  --color-destructive: #ef4444;
 
   /* Radius */
   --radius-sm: 2px;
@@ -72,12 +59,60 @@
   --color-chart-1: var(--color-brand-blue);
   --color-chart-2: var(--color-brand-blue-light);
   --color-chart-3: #4a6cf7;
-  --color-chart-4: var(--color-iron);
-  --color-chart-5: var(--color-steel);
+  --color-chart-4: #5a5a5a;
+  --color-chart-5: #808080;
+
+  /* Neutral tokens — change in dark mode */
+  --color-pure-black: var(--neutral-100);
+  --color-obsidian: var(--neutral-950);
+  --color-graphite: var(--neutral-700);
+  --color-iron: var(--neutral-600);
+  --color-slate: var(--neutral-550);
+  --color-steel: var(--neutral-500);
+  --color-fog: var(--neutral-400);
+  --color-ash: var(--neutral-300);
+  --color-mist: var(--border-color);
+  --color-cloud: var(--surface-bg);
+  --color-paper: var(--surface-muted);
 }
 
+/* ====== Light Mode (default) ====== */
 :root {
   --radius: 2px;
+  --neutral-100: #000000;
+  --neutral-300: #bfbfbf;
+  --neutral-400: #a0a0a0;
+  --neutral-500: #808080;
+  --neutral-550: #666666;
+  --neutral-600: #5a5a5a;
+  --neutral-700: #333333;
+  --neutral-950: #1a1a1a;
+  --surface-bg: #edeff2;
+  --surface-card: #ffffff;
+  --surface-muted: #f7f8fa;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-muted: #808080;
+  --border-color: #dedfe1;
+}
+
+/* ====== Dark Mode ====== */
+.dark {
+  --neutral-100: #edeff2;
+  --neutral-300: #666666;
+  --neutral-400: #888888;
+  --neutral-500: #a0a0a0;
+  --neutral-550: #bfbfbf;
+  --neutral-600: #cccccc;
+  --neutral-700: #dedfe1;
+  --neutral-950: #1a1a1a;
+  --surface-bg: #0f0f0f;
+  --surface-card: #1a1a1a;
+  --surface-muted: #222222;
+  --text-primary: #edeff2;
+  --text-secondary: #bfbfbf;
+  --text-muted: #888888;
+  --border-color: rgba(255, 255, 255, 0.1);
 }
 
 @layer base {
@@ -94,14 +129,14 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-cloud);
+  background: var(--surface-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-ash);
+  background: var(--neutral-300);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-steel);
+  background: var(--neutral-500);
 }
 
 /* Smooth scrolling */
@@ -113,4 +148,14 @@ html {
 ::selection {
   background: rgba(1, 118, 204, 0.25);
   color: #000000;
+}
+
+/* Dark mode overrides for inline SVGs in Hero */
+.dark svg line[stroke="#dedfe1"] {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+/* Dark mode green text (for metrics) */
+.dark .text-green-600 {
+  color: #4ade80;
 }

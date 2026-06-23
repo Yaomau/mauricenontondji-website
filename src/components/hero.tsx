@@ -35,7 +35,7 @@ export default function Hero() {
               </Link>
               <a
                 href="#services"
-                className="inline-flex items-center justify-center text-[14px] font-roboto font-medium text-pure-black border border-brand-blue/30 bg-brand-yellow-solid px-5 py-3 rounded-[2px] hover:border-brand-blue/50 transition-colors"
+                className="inline-flex items-center justify-center text-[14px] font-roboto font-medium text-pure-black border border-brand-blue/30 bg-accent-yellow-solid px-5 py-3 rounded-[2px] hover:border-brand-blue/50 transition-colors"
               >
                 Découvrir mes services
               </a>
@@ -43,7 +43,7 @@ export default function Hero() {
           </div>
 
           {/* Right — Metrics Widget */}
-          <div className="bg-white border border-mist rounded-[2px] shadow-sm-2 p-4 sm:p-6">
+          <div className="bg-card border border-mist rounded-[2px] shadow-sm-2 p-4 sm:p-6">
             {/* Widget Header */}
             <div className="flex items-center justify-between mb-4 pb-4 border-b border-mist">
               <div>
@@ -68,14 +68,14 @@ export default function Hero() {
                 preserveAspectRatio="none"
               >
                 {/* Grid lines */}
-                <line x1="0" y1="45" x2="400" y2="45" stroke="#dedfe1" strokeWidth="1" />
-                <line x1="0" y1="90" x2="400" y2="90" stroke="#dedfe1" strokeWidth="1" />
-                <line x1="0" y1="135" x2="400" y2="135" stroke="#dedfe1" strokeWidth="1" />
+                <line x1="0" y1="45" x2="400" y2="45" className="stroke-mist" strokeWidth="1" />
+                <line x1="0" y1="90" x2="400" y2="90" className="stroke-mist" strokeWidth="1" />
+                <line x1="0" y1="135" x2="400" y2="135" className="stroke-mist" strokeWidth="1" />
 
                 {/* Area fill */}
                 <defs>
                   <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#0176cc" stopOpacity="0.2" />
+                    <stop offset="0%" stopColor="#0176cc" stopOpacity="0.3" />
                     <stop offset="100%" stopColor="#0176cc" stopOpacity="0.02" />
                   </linearGradient>
                 </defs>

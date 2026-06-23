@@ -69,7 +69,7 @@ export default function Testimonials() {
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.name}
-              className="bg-white border border-mist rounded-[2px] p-6 flex flex-col"
+              className="bg-card border border-mist rounded-[2px] p-6 flex flex-col"
             >
               {/* Quote icon + Rating */}
               <div className="flex items-start justify-between mb-4">

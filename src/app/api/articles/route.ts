@@ -1,17 +1,39 @@
 import { db } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-// GET /api/articles — list all articles (with optional ?status=published for public)
+// GET /api/articles — list articles
+// Without ?status= param → requires auth (admin, sees all)
+// With ?status=published → public (only published articles)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
 
-    const where = status ? { status } : {};
-    const articles = await db.article.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-    });
+    // If no status filter, require auth to see all articles (including drafts)
+    let articles;
+    if (status) {
+      // Public endpoint: only return matching status
+      articles = await db.article.findMany({
+        where: { status },
+        orderBy: { createdAt: 'desc' },
+      });
+    } else {
+      // Admin endpoint: check auth
+      const session = await getServerSession(authOptions);
+      if (!session) {
+        // Fall back to published only for unauthenticated users
+        articles = await db.article.findMany({
+          where: { status: 'published' },
+          orderBy: { createdAt: 'desc' },
+        });
+      } else {
+        articles = await db.article.findMany({
+          orderBy: { createdAt: 'desc' },
+        });
+      }
+    }
 
     return NextResponse.json(articles);
   } catch (error) {
@@ -19,9 +41,15 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/articles — create a new article
+// POST /api/articles — create article (requires auth)
 export async function POST(request: NextRequest) {
   try {
+    // Require authentication
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+    }
+
     const body = await request.json();
 
     // Auto-generate slug from title if not provided

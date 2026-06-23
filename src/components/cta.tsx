@@ -48,7 +48,7 @@ export default function CTA() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="votre@email.com"
                   required
-                  className="flex-1 bg-white border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-pure-black focus:outline-none"
+                  className="flex-1 bg-card border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-pure-black focus:outline-none"
                 />
                 <button
                   type="submit"

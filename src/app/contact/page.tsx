@@ -75,7 +75,7 @@ export default function ContactPage() {
           </p>
 
           {sent ? (
-            <div className="mt-10 bg-white border border-mist rounded-[2px] p-8 text-center">
+            <div className="mt-10 bg-card border border-mist rounded-[2px] p-8 text-center">
               <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 size={24} className="text-green-600" />
               </div>
@@ -111,7 +111,7 @@ export default function ContactPage() {
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="Votre nom"
                     required
-                    className="w-full bg-white border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-brand-blue focus:outline-none transition-colors"
+                    className="w-full bg-card border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-brand-blue focus:outline-none transition-colors"
                   />
                 </div>
                 <div>
@@ -128,7 +128,7 @@ export default function ContactPage() {
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="Votre prénom"
                     required
-                    className="w-full bg-white border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-brand-blue focus:outline-none transition-colors"
+                    className="w-full bg-card border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-brand-blue focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -148,7 +148,7 @@ export default function ContactPage() {
                   placeholder="Décrivez votre projet ou posez votre question..."
                   required
                   rows={7}
-                  className="w-full bg-white border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-brand-blue focus:outline-none transition-colors resize-y min-h-[160px]"
+                  className="w-full bg-card border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-brand-blue focus:outline-none transition-colors resize-y min-h-[160px]"
                 />
               </div>
 
