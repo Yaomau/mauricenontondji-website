@@ -11,7 +11,7 @@ const vercelUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : undefined;
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Admin',
