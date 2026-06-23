@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Oswald, Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { Providers } from "@/components/providers";
+import RootClientLayout from "./layout-client";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -48,10 +48,10 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={`${oswald.variable} ${roboto.variable} antialiased`}>
-        <Providers>
+        <RootClientLayout>
           {children}
           <Toaster />
-        </Providers>
+        </RootClientLayout>
       </body>
     </html>
   );

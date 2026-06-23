@@ -1,7 +1,12 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-export const authOptions: NextAuthOptions = {
+// Vercel sets VERCEL_URL automatically — use it as fallback
+const vercelUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : undefined;
+
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Admin',
@@ -35,7 +40,8 @@ export const authOptions: NextAuthOptions = {
     maxAge: 24 * 60 * 60, // 24 hours
   },
   pages: {
-    signIn: undefined, // We use a modal, not a separate page
+    signIn: '/admin',
+    error: '/admin',
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -52,6 +58,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+  ...(vercelUrl && { url: vercelUrl }),
 };
 
 const handler = NextAuth(authOptions);
