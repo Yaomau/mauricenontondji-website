@@ -22,28 +22,32 @@ const fallbackArticles = [
     title: 'Comment construire une marque personnelle forte sur LinkedIn en 2024',
     excerpt: 'Découvrez les 5 piliers fondamentaux pour bâtir une marque personnelle qui attire les bonnes opportunités et positionne votre expertise sur le marché.',
     date: '15 Juin 2024',
+    slug: '',
   },
   {
     tag: 'Stratégie',
-    title: 'LinkedIn Algorithm : comprendre les dernières mises à jour pour plus de visibilité',
+    title: "LinkedIn Algorithm : comprendre les dernières mises à jour pour plus de visibilité",
     excerpt: "Analyse approfondie des derniers changements de l'algorithme LinkedIn et les stratégies concrètes pour adapter votre approche de publication.",
     date: '2 Juin 2024',
+    slug: '',
   },
   {
     tag: 'Prospection',
     title: 'Les erreurs fatales à éviter lors de votre prospection LinkedIn',
     excerpt: "Les techniques de prospection qui font fuir vos prospects et comment les remplacer par des approches authentiques qui génèrent des rendez-vous.",
     date: '20 Mai 2024',
+    slug: '',
   },
   {
     tag: 'Content Marketing',
     title: 'Storytelling sur LinkedIn : raconter votre histoire pour inspirer et convaincre',
     excerpt: "Maîtrisez l'art du storytelling professionnel pour créer un lien émotionnel avec votre audience et transformer vos lecteurs en partenaires.",
     date: '8 Mai 2024',
+    slug: '',
   },
 ];
 
-export default function Articles() {
+export default function Articles({ onNavigateArticles }: { onNavigateArticles: () => void }) {
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
@@ -65,6 +69,7 @@ export default function Articles() {
           month: 'long',
           year: 'numeric',
         }),
+        slug: a.slug,
       }))
     : fallbackArticles;
 
@@ -85,13 +90,13 @@ export default function Articles() {
               et développer votre réseau professionnel.
             </p>
           </div>
-          <a
-            href="#"
-            className="inline-flex items-center gap-1 text-[14px] font-roboto font-medium text-brand-blue border border-brand-blue/30 px-5 py-2.5 rounded-[2px] hover:border-brand-blue transition-colors self-start sm:self-auto"
+          <button
+            onClick={onNavigateArticles}
+            className="inline-flex items-center gap-1 text-[14px] font-roboto font-medium text-brand-blue border border-brand-blue/30 px-5 py-2.5 rounded-[2px] hover:border-brand-blue transition-colors self-start sm:self-auto cursor-pointer"
           >
             Voir tous les articles
             <ArrowUpRight size={16} />
-          </a>
+          </button>
         </div>
 
         {/* Articles Grid */}
@@ -99,6 +104,14 @@ export default function Articles() {
           {displayArticles.map((article) => (
             <article
               key={article.title}
+              onClick={() => {
+                if (article.slug) {
+                  window.location.hash = `#article/${article.slug}`;
+                  window.dispatchEvent(new HashChangeEvent('hashchange'));
+                } else {
+                  onNavigateArticles();
+                }
+              }}
               className="bg-white border border-mist rounded-[2px] p-4 hover:border-brand-blue/30 transition-colors group cursor-pointer flex flex-col"
             >
               {/* Image placeholder */}
@@ -109,7 +122,7 @@ export default function Articles() {
               <span className="text-[12px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
                 {article.tag}
               </span>
-              <h3 className="font-oswald font-bold text-[16px] sm:text-[18px] text-pure-black mt-2 mb-2 leading-[1.3] line-clamp-3">
+              <h3 className="font-oswald font-bold text-[16px] sm:text-[18px] text-pure-black mt-2 mb-2 leading-[1.3] line-clamp-3 group-hover:text-brand-blue transition-colors">
                 {article.title}
               </h3>
               <p className="text-[14px] font-roboto text-iron leading-[1.5] line-clamp-3 mb-4 flex-1">
