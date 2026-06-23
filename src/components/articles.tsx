@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
 interface Article {
@@ -47,7 +48,7 @@ const fallbackArticles = [
   },
 ];
 
-export default function Articles({ onNavigateArticles }: { onNavigateArticles: () => void }) {
+export default function Articles() {
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
@@ -90,28 +91,21 @@ export default function Articles({ onNavigateArticles }: { onNavigateArticles: (
               et développer votre réseau professionnel.
             </p>
           </div>
-          <button
-            onClick={onNavigateArticles}
-            className="inline-flex items-center gap-1 text-[14px] font-roboto font-medium text-brand-blue border border-brand-blue/30 px-5 py-2.5 rounded-[2px] hover:border-brand-blue transition-colors self-start sm:self-auto cursor-pointer"
+          <Link
+            href="/articles"
+            className="inline-flex items-center gap-1 text-[14px] font-roboto font-medium text-brand-blue border border-brand-blue/30 px-5 py-2.5 rounded-[2px] hover:border-brand-blue transition-colors self-start sm:self-auto"
           >
             Voir tous les articles
             <ArrowUpRight size={16} />
-          </button>
+          </Link>
         </div>
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {displayArticles.map((article) => (
-            <article
+            <Link
               key={article.title}
-              onClick={() => {
-                if (article.slug) {
-                  window.location.hash = `#article/${article.slug}`;
-                  window.dispatchEvent(new HashChangeEvent('hashchange'));
-                } else {
-                  onNavigateArticles();
-                }
-              }}
+              href={article.slug ? `/articles/${article.slug}` : '/articles'}
               className="bg-white border border-mist rounded-[2px] p-4 hover:border-brand-blue/30 transition-colors group cursor-pointer flex flex-col"
             >
               {/* Image placeholder */}
@@ -131,7 +125,7 @@ export default function Articles({ onNavigateArticles }: { onNavigateArticles: (
               <p className="text-[12px] font-roboto text-steel">
                 {article.date}
               </p>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

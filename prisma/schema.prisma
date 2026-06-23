@@ -40,3 +40,13 @@ model Article {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

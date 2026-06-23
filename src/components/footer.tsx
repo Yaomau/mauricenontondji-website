@@ -1,30 +1,31 @@
 import { Linkedin, Mail, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
 
 const footerLinks = {
   navigation: {
     title: 'Navigation',
     links: [
-      { label: 'Accueil', href: '#accueil' },
-      { label: 'Services', href: '#services' },
-      { label: 'Articles', href: '#articles' },
-      { label: 'Témoignages', href: '#temoignages' },
-      { label: 'Contact', href: '#contact' },
+      { label: 'Accueil', href: '/' },
+      { label: 'Services', href: '/#services' },
+      { label: 'Articles', href: '/articles' },
+      { label: 'Témoignages', href: '/#temoignages' },
+      { label: 'Contact', href: '/contact' },
     ],
   },
   services: {
     title: 'Services',
     links: [
-      { label: 'Optimisation de profil', href: '#services' },
-      { label: 'Stratégie de contenu', href: '#services' },
-      { label: 'Analyse & Reporting', href: '#services' },
-      { label: 'Prospection LinkedIn', href: '#services' },
-      { label: 'Coaching personnalisé', href: '#services' },
+      { label: 'Optimisation de profil', href: '/#services' },
+      { label: 'Stratégie de contenu', href: '/#services' },
+      { label: 'Analyse & Reporting', href: '/#services' },
+      { label: 'Prospection LinkedIn', href: '/#services' },
+      { label: 'Coaching personnalisé', href: '/#services' },
     ],
   },
   ressources: {
     title: 'Ressources',
     links: [
-      { label: 'Blog', href: '#articles' },
+      { label: 'Blog', href: '/articles' },
       { label: 'Guide gratuit LinkedIn', href: '#' },
       { label: 'Templates de posts', href: '#' },
       { label: 'Étude de cas', href: '#' },
@@ -40,7 +41,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Brand Column */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-brand-blue rounded-[2px] flex items-center justify-center">
                 <span className="text-white font-oswald font-bold text-sm leading-none">
                   MN
@@ -49,7 +50,7 @@ export default function Footer() {
               <span className="font-oswald font-bold text-[16px] text-white">
                 maurice nontondji
               </span>
-            </div>
+            </Link>
             <p className="text-[14px] font-roboto text-fog leading-[1.5] mb-4 max-w-[240px]">
               Expert LinkedIn & Stratégie Digitale. J&apos;aide les entrepreneurs à
               transformer leur visibilité en opportunités business.
@@ -81,13 +82,13 @@ export default function Footer() {
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-[14px] font-roboto text-fog hover:text-brand-blue-light transition-colors inline-flex items-center gap-1"
                     >
                       {link.label}
                       {link.href === '#' && <ArrowUpRight size={12} />}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

@@ -1,0 +1,839 @@
+     1→'use client';
+     2→
+     3→import { useState, useEffect, useCallback } from 'react';
+     4→import {
+     5→  X,
+     6→  Plus,
+     7→  Pencil,
+     8→  Trash2,
+     9→  Eye,
+    10→  Search,
+    11→  FileText,
+    12→  AlertCircle,
+    13→  CheckCircle2,
+    14→  Clock,
+    15→  ChevronDown,
+    16→  ChevronUp,
+    17→  Save,
+    18→  ArrowLeft,
+    19→  BarChart3,
+    20→  Copy,
+    21→  Check,
+    22→} from 'lucide-react';
+    23→
+    24→/* ------------------------------------------------------------------ */
+    25→/*  Types                                                              */
+    26→/* ------------------------------------------------------------------ */
+    27→interface Article {
+    28→  id: string;
+    29→  title: string;
+    30→  slug: string;
+    31→  excerpt: string | null;
+    32→  content: string | null;
+    33→  coverImage: string | null;
+    34→  tag: string | null;
+    35→  status: string;
+    36→  seoTitle: string | null;
+    37→  seoDescription: string | null;
+    38→  seoKeywords: string | null;
+    39→  focusKeyword: string | null;
+    40→  correctionNotes: string | null;
+    41→  publishedAt: string | null;
+    42→  createdAt: string;
+    43→  updatedAt: string;
+    44→}
+    45→
+    46→type ViewMode = 'list' | 'edit' | 'create';
+    47→type SeoTab = 'editor' | 'seo' | 'correction';
+    48→
+    49→const EMPTY_ARTICLE: Omit<Article, 'id' | 'createdAt' | 'updatedAt'> = {
+    50→  title: '',
+    51→  slug: '',
+    52→  excerpt: '',
+    53→  content: '',
+    54→  coverImage: '',
+    55→  tag: '',
+    56→  status: 'draft',
+    57→  seoTitle: '',
+    58→  seoDescription: '',
+    59→  seoKeywords: '',
+    60→  focusKeyword: '',
+    61→  correctionNotes: '',
+    62→  publishedAt: null,
+    63→};
+    64→
+    65→/* ------------------------------------------------------------------ */
+    66→/*  SEO Score Helper                                                   */
+    67→/* ------------------------------------------------------------------ */
+    68→function getSeoScore(article: Partial<Article>): { score: number; items: { label: string; ok: boolean }[] } {
+    69→  const items = [
+    70→    { label: 'Meta titre renseigné', ok: !!article.seoTitle && article.seoTitle.length >= 30 },
+    71→    { label: 'Meta titre < 60 caractères', ok: !article.seoTitle || article.seoTitle.length <= 60 },
+    72→    { label: 'Meta description renseignée', ok: !!article.seoDescription && article.seoDescription.length >= 50 },
+    73→    { label: 'Meta desc. < 160 caractères', ok: !article.seoDescription || article.seoDescription.length <= 160 },
+    74→    { label: 'Mot-clé focal défini', ok: !!article.focusKeyword },
+    75→    { label: 'Tag / catégorie défini', ok: !!article.tag },
+    76→    { label: 'Extrait renseigné', ok: !!article.excerpt && article.excerpt.length > 50 },
+    77→    { label: 'Slug personnalisé', ok: !!article.slug && article.slug.length > 3 },
+    78→  ];
+    79→  const okCount = items.filter((i) => i.ok).length;
+    80→  return { score: Math.round((okCount / items.length) * 100), items };
+    81→}
+    82→
+    83→/* ------------------------------------------------------------------ */
+    84→/*  Status Badge                                                       */
+    85→/* ------------------------------------------------------------------ */
+    86→function StatusBadge({ status }: { status: string }) {
+    87→  const config: Record<string, { label: string; className: string; icon: typeof FileText }> = {
+    88→    draft: { label: 'Brouillon', className: 'bg-cloud text-iron border-mist', icon: FileText },
+    89→    review: { label: 'En correction', className: 'bg-brand-yellow-solid/40 text-graphite border-brand-yellow-solid', icon: AlertCircle },
+    90→    published: { label: 'Publié', className: 'bg-green-50 text-green-700 border-green-200', icon: CheckCircle2 },
+    91→  };
+    92→  const c = config[status] || config.draft;
+    93→  const Icon = c.icon;
+    94→  return (
+    95→    <span className={`inline-flex items-center gap-1 text-[11px] font-roboto font-medium px-2 py-0.5 border rounded-[2px] ${c.className}`}>
+    96→      <Icon size={11} />
+    97→      {c.label}
+    98→    </span>
+    99→  );
+   100→}
+   101→
+   102→/* ------------------------------------------------------------------ */
+   103→/*  Main Admin Panel                                                   */
+   104→/* ------------------------------------------------------------------ */
+   105→export default function ArticleAdmin({ onClose }: { onClose: () => void }) {
+   106→  const [articles, setArticles] = useState<Article[]>([]);
+   107→  const [loading, setLoading] = useState(true);
+   108→  const [view, setView] = useState<ViewMode>('list');
+   109→  const [current, setCurrent] = useState<Partial<Article>>(EMPTY_ARTICLE);
+   110→  const [editId, setEditId] = useState<string | null>(null);
+   111→  const [search, setSearch] = useState('');
+   112→  const [seoTab, setSeoTab] = useState<SeoTab>('editor');
+   113→  const [saving, setSaving] = useState(false);
+   114→  const [toast, setToast] = useState<string | null>(null);
+   115→  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+   116→  const [copied, setCopied] = useState(false);
+   117→
+   118→  const fetchArticles = useCallback(async () => {
+   119→    try {
+   120→      const res = await fetch('/api/articles');
+   121→      const data = await res.json();
+   122→      setArticles(Array.isArray(data) ? data : []);
+   123→    } catch {
+   124→      setArticles([]);
+   125→    } finally {
+   126→      setLoading(false);
+   127→    }
+   128→  }, []);
+   129→
+   130→  useEffect(() => {
+   131→    fetchArticles();
+   132→  }, [fetchArticles]);
+   133→
+   134→  const showToast = (msg: string) => {
+   135→    setToast(msg);
+   136→    setTimeout(() => setToast(null), 3000);
+   137→  };
+   138→
+   139→  /* ---------- CRUD handlers ---------- */
+   140→  const handleSave = async () => {
+   141→    if (!current.title?.trim()) {
+   142→      showToast('Le titre est obligatoire');
+   143→      return;
+   144→    }
+   145→    setSaving(true);
+   146→    try {
+   147→      if (view === 'create') {
+   148→        const res = await fetch('/api/articles', {
+   149→          method: 'POST',
+   150→          headers: { 'Content-Type': 'application/json' },
+   151→          body: JSON.stringify(current),
+   152→        });
+   153→        if (!res.ok) throw new Error();
+   154→        showToast('Article créé avec succès');
+   155→      } else if (editId) {
+   156→        const res = await fetch(`/api/articles/${editId}`, {
+   157→          method: 'PUT',
+   158→          headers: { 'Content-Type': 'application/json' },
+   159→          body: JSON.stringify(current),
+   160→        });
+   161→        if (!res.ok) throw new Error();
+   162→        showToast('Article mis à jour');
+   163→      }
+   164→      await fetchArticles();
+   165→      setView('list');
+   166→      setCurrent(EMPTY_ARTICLE);
+   167→      setEditId(null);
+   168→    } catch {
+   169→      showToast("Erreur lors de l'enregistrement");
+   170→    } finally {
+   171→      setSaving(false);
+   172→    }
+   173→  };
+   174→
+   175→  const handleDelete = async (id: string) => {
+   176→    try {
+   177→      await fetch(`/api/articles/${id}`, { method: 'DELETE' });
+   178→      setArticles((prev) => prev.filter((a) => a.id !== id));
+   179→      setDeleteConfirm(null);
+   180→      showToast('Article supprimé');
+   181→    } catch {
+   182→      showToast('Erreur lors de la suppression');
+   183→    }
+   184→  };
+   185→
+   186→  const handleEdit = (article: Article) => {
+   187→    setCurrent(article);
+   188→    setEditId(article.id);
+   189→    setView('edit');
+   190→    setSeoTab('editor');
+   191→  };
+   192→
+   193→  const handleNew = () => {
+   194→    setCurrent(EMPTY_ARTICLE);
+   195→    setEditId(null);
+   196→    setView('create');
+   197→    setSeoTab('editor');
+   198→  };
+   199→
+   200→  /* ---------- Slug auto-gen ---------- */
+   201→  const generateSlug = (title: string) => {
+   202→    return title
+   203→      .toLowerCase()
+   204→      .normalize('NFD')
+   205→      .replace(/[\u0300-\u036f]/g, '')
+   206→      .replace(/[^a-z0-9]+/g, '-')
+   207→      .replace(/(^-|-$)/g, '');
+   208→  };
+   209→
+   210→  /* ---------- Filter ---------- */
+   211→  const filtered = articles.filter(
+   212→    (a) =>
+   213→      a.title.toLowerCase().includes(search.toLowerCase()) ||
+   214→      a.tag?.toLowerCase().includes(search.toLowerCase()) ||
+   215→      a.status.includes(search.toLowerCase())
+   216→  );
+   217→
+   218→  /* ---------- SEO ---------- */
+   219→  const seo = getSeoScore(current);
+   220→
+   221→  const copySlug = () => {
+   222→    if (current.slug) {
+   223→      navigator.clipboard.writeText(current.slug);
+   224→      setCopied(true);
+   225→      setTimeout(() => setCopied(false), 1500);
+   226→    }
+   227→  };
+   228→
+   229→  /* ================================================================ */
+   230→  /*  LIST VIEW                                                        */
+   231→  /* ================================================================ */
+   232→  if (view === 'list') {
+   233→    return (
+   234→      <div className="fixed inset-0 z-[100] bg-obsidian flex flex-col">
+   235→        {/* Header */}
+   236→        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+   237→          <div className="flex items-center gap-4">
+   238→            <h2 className="font-oswald font-bold text-[20px] text-white">
+   239→              Gestion des articles
+   240→            </h2>
+   241→            <span className="text-[12px] font-roboto text-fog">
+   242→              {articles.length} article{articles.length > 1 ? 's' : ''}
+   243→            </span>
+   244→          </div>
+   245→          <div className="flex items-center gap-3">
+   246→            <button
+   247→              onClick={handleNew}
+   248→              className="inline-flex items-center gap-2 bg-brand-blue text-white text-[13px] font-roboto font-medium px-4 py-2 rounded-[2px] hover:bg-brand-blue/90 transition-colors"
+   249→            >
+   250→              <Plus size={16} />
+   251→              Nouvel article
+   252→            </button>
+   253→            <button
+   254→              onClick={onClose}
+   255→              className="w-8 h-8 flex items-center justify-center text-fog hover:text-white border border-white/10 rounded-[2px] transition-colors"
+   256→            >
+   257→              <X size={18} />
+   258→            </button>
+   259→          </div>
+   260→        </div>
+   261→
+   262→        {/* Search */}
+   263→        <div className="px-6 py-3 border-b border-white/10">
+   264→          <div className="relative max-w-[360px]">
+   265→            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-steel" />
+   266→            <input
+   267→              type="text"
+   268→              value={search}
+   269→              onChange={(e) => setSearch(e.target.value)}
+   270→              placeholder="Rechercher par titre, tag ou statut..."
+   271→              className="w-full bg-white/5 border border-white/10 rounded-[2px] pl-9 pr-3 py-2 text-[13px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   272→            />
+   273→          </div>
+   274→        </div>
+   275→
+   276→        {/* Table */}
+   277→        <div className="flex-1 overflow-y-auto px-6 py-4">
+   278→          {loading ? (
+   279→            <div className="flex items-center justify-center h-40 text-fog text-[14px]">
+   280→              Chargement...
+   281→            </div>
+   282→          ) : filtered.length === 0 ? (
+   283→            <div className="flex flex-col items-center justify-center h-40 gap-3">
+   284→              <FileText size={32} className="text-steel" />
+   285→              <p className="text-fog text-[14px]">
+   286→                {search ? 'Aucun résultat trouvé' : 'Aucun article pour le moment'}
+   287→              </p>
+   288→              {!search && (
+   289→                <button
+   290→                  onClick={handleNew}
+   291→                  className="text-[13px] font-roboto font-medium text-brand-blue-light hover:text-white transition-colors"
+   292→                >
+   293→                  Créer votre premier article
+   294→                </button>
+   295→              )}
+   296→            </div>
+   297→          ) : (
+   298→            <div className="border border-white/10 rounded-[2px] overflow-hidden">
+   299→              {/* Table Header */}
+   300→              <div className="grid grid-cols-[1fr_120px_100px_100px_80px] gap-4 px-4 py-2.5 bg-white/5 text-[11px] font-roboto font-medium text-fog uppercase tracking-wider">
+   301→                <span>Article</span>
+   302→                <span>Tag</span>
+   303→                <span>Statut</span>
+   304→                <span>Date</span>
+   305→                <span className="text-right">Actions</span>
+   306→              </div>
+   307→
+   308→              {/* Rows */}
+   309→              {filtered.map((article) => (
+   310→                <div
+   311→                  key={article.id}
+   312→                  className="grid grid-cols-[1fr_120px_100px_100px_80px] gap-4 px-4 py-3 border-t border-white/5 hover:bg-white/3 transition-colors items-center"
+   313→                >
+   314→                  <div className="min-w-0">
+   315→                    <p className="text-[13px] font-roboto font-medium text-white truncate">
+   316→                      {article.title}
+   317→                    </p>
+   318→                    <p className="text-[11px] font-roboto text-steel truncate mt-0.5">
+   319→                      /{article.slug}
+   320→                    </p>
+   321→                  </div>
+   322→                  <div>
+   323→                    {article.tag ? (
+   324→                      <span className="text-[11px] font-roboto font-medium text-brand-blue-light bg-brand-blue/10 px-2 py-0.5 rounded-[2px]">
+   325→                        {article.tag}
+   326→                      </span>
+   327→                    ) : (
+   328→                      <span className="text-[11px] font-roboto text-steel">—</span>
+   329→                    )}
+   330→                  </div>
+   331→                  <div>
+   332→                    <StatusBadge status={article.status} />
+   333→                  </div>
+   334→                  <div>
+   335→                    <p className="text-[11px] font-roboto text-steel">
+   336→                      {new Date(article.createdAt).toLocaleDateString('fr-FR', {
+   337→                        day: '2-digit',
+   338→                        month: 'short',
+   339→                      })}
+   340→                    </p>
+   341→                  </div>
+   342→                  <div className="flex items-center justify-end gap-1">
+   343→                    <button
+   344→                      onClick={() => handleEdit(article)}
+   345→                      className="w-7 h-7 flex items-center justify-center text-fog hover:text-white transition-colors rounded-[2px] hover:bg-white/5"
+   346→                      title="Éditer"
+   347→                    >
+   348→                      <Pencil size={14} />
+   349→                    </button>
+   350→                    {article.status === 'draft' && (
+   351→                      <button
+   352→                        onClick={() => {
+   353→                          setCurrent(article);
+   354→                          setEditId(article.id);
+   355→                          setView('edit');
+   356→                          setSeoTab('correction');
+   357→                        }}
+   358→                        className="w-7 h-7 flex items-center justify-center text-fog hover:text-brand-blue-light transition-colors rounded-[2px] hover:bg-white/5"
+   359→                        title="Corriger"
+   360→                      >
+   361→                        <AlertCircle size={14} />
+   362→                      </button>
+   363→                    )}
+   364→                    {deleteConfirm === article.id ? (
+   365→                      <button
+   366→                        onClick={() => handleDelete(article.id)}
+   367→                        className="w-7 h-7 flex items-center justify-center text-red-400 hover:text-red-300 transition-colors rounded-[2px] hover:bg-red-500/10"
+   368→                        title="Confirmer"
+   369→                      >
+   370→                        <CheckCircle2 size={14} />
+   371→                      </button>
+   372→                    ) : (
+   373→                      <button
+   374→                        onClick={() => setDeleteConfirm(article.id)}
+   375→                        className="w-7 h-7 flex items-center justify-center text-fog hover:text-red-400 transition-colors rounded-[2px] hover:bg-white/5"
+   376→                        title="Supprimer"
+   377→                      >
+   378→                        <Trash2 size={14} />
+   379→                      </button>
+   380→                    )}
+   381→                  </div>
+   382→                </div>
+   383→              ))}
+   384→            </div>
+   385→          )}
+   386→        </div>
+   387→
+   388→        {/* Toast */}
+   389→        {toast && (
+   390→          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white text-pure-black text-[13px] font-roboto font-medium px-4 py-2.5 rounded-[2px] shadow-sm-2 z-10">
+   391→            {toast}
+   392→          </div>
+   393→        )}
+   394→      </div>
+   395→    );
+   396→  }
+   397→
+   398→  /* ================================================================ */
+   399→  /*  EDITOR / CREATE VIEW                                              */
+   400→  /* ================================================================ */
+   401→  const isEdit = view === 'edit';
+   402→  const seoTabItems: { key: SeoTab; label: string; icon: typeof FileText }[] = [
+   403→    { key: 'editor', label: 'Éditeur', icon: Pencil },
+   404→    { key: 'seo', label: 'SEO', icon: BarChart3 },
+   405→    { key: 'correction', label: 'Correction', icon: AlertCircle },
+   406→  ];
+   407→
+   408→  return (
+   409→    <div className="fixed inset-0 z-[100] bg-obsidian flex flex-col">
+   410→      {/* Header */}
+   411→      <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+   412→        <div className="flex items-center gap-4">
+   413→          <button
+   414→            onClick={() => { setView('list'); setCurrent(EMPTY_ARTICLE); setEditId(null); }}
+   415→            className="w-8 h-8 flex items-center justify-center text-fog hover:text-white border border-white/10 rounded-[2px] transition-colors"
+   416→          >
+   417→            <ArrowLeft size={16} />
+   418→          </button>
+   419→          <div>
+   420→            <h2 className="font-oswald font-bold text-[18px] text-white">
+   421→              {isEdit ? current.title || 'Éditer l\'article' : 'Nouvel article'}
+   422→            </h2>
+   423→            <p className="text-[12px] font-roboto text-steel mt-0.5">
+   424→              {isEdit ? `Modifié le ${new Date(current.updatedAt || '').toLocaleDateString('fr-FR')}` : 'Remplissez les champs ci-dessous'}
+   425→            </p>
+   426→          </div>
+   427→        </div>
+   428→        <div className="flex items-center gap-3">
+   429→          {/* Status selector */}
+   430→          <select
+   431→            value={current.status || 'draft'}
+   432→            onChange={(e) => setCurrent({ ...current, status: e.target.value })}
+   433→            className="bg-white/5 border border-white/10 rounded-[2px] px-3 py-2 text-[13px] font-roboto text-white focus:border-brand-blue/50 focus:outline-none appearance-none cursor-pointer"
+   434→          >
+   435→            <option value="draft" className="bg-obsidian">Brouillon</option>
+   436→            <option value="review" className="bg-obsidian">En correction</option>
+   437→            <option value="published" className="bg-obsidian">Publié</option>
+   438→          </select>
+   439→          <button
+   440→            onClick={handleSave}
+   441→            disabled={saving}
+   442→            className="inline-flex items-center gap-2 bg-brand-blue text-white text-[13px] font-roboto font-medium px-4 py-2 rounded-[2px] hover:bg-brand-blue/90 transition-colors disabled:opacity-50"
+   443→          >
+   444→            <Save size={15} />
+   445→            {saving ? 'Enregistrement...' : 'Enregistrer'}
+   446→          </button>
+   447→          <button
+   448→            onClick={onClose}
+   449→            className="w-8 h-8 flex items-center justify-center text-fog hover:text-white border border-white/10 rounded-[2px] transition-colors"
+   450→          >
+   451→            <X size={18} />
+   452→          </button>
+   453→        </div>
+   454→      </div>
+   455→
+   456→      {/* Tabs */}
+   457→      <div className="flex items-center gap-0 px-6 border-b border-white/10">
+   458→        {seoTabItems.map((tab) => (
+   459→          <button
+   460→            key={tab.key}
+   461→            onClick={() => setSeoTab(tab.key)}
+   462→            className={`inline-flex items-center gap-2 px-4 py-3 text-[13px] font-roboto font-medium border-b-2 transition-colors ${
+   463→              seoTab === tab.key
+   464→                ? 'text-white border-brand-blue'
+   465→                : 'text-fog border-transparent hover:text-white'
+   466→            }`}
+   467→          >
+   468→            <tab.icon size={14} />
+   469→            {tab.label}
+   470→            {tab.key === 'correction' && current.correctionNotes && (
+   471→              <span className="w-2 h-2 bg-brand-yellow-solid rounded-full" />
+   472→            )}
+   473→          </button>
+   474→        ))}
+   475→      </div>
+   476→
+   477→      {/* Content area */}
+   478→      <div className="flex-1 overflow-y-auto px-6 py-6">
+   479→        <div className="max-w-[900px] mx-auto">
+   480→          {/* ============ EDITOR TAB ============ */}
+   481→          {seoTab === 'editor' && (
+   482→            <div className="flex flex-col gap-5">
+   483→              {/* Title */}
+   484→              <div>
+   485→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   486→                  Titre de l&apos;article *
+   487→                </label>
+   488→                <input
+   489→                  type="text"
+   490→                  value={current.title || ''}
+   491→                  onChange={(e) => {
+   492→                    const title = e.target.value;
+   493→                    setCurrent({
+   494→                      ...current,
+   495→                      title,
+   496→                      slug: generateSlug(title),
+   497→                      seoTitle: current.seoTitle || title,
+   498→                    });
+   499→                  }}
+   500→                  placeholder="Ex: Comment construire une marque personnelle forte sur LinkedIn"
+   501→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[18px] font-oswald font-bold text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   502→                />
+   503→              </div>
+   504→
+   505→              {/* Slug + Tag row */}
+   506→              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+   507→                <div>
+   508→                  <div className="flex items-center justify-between mb-2">
+   509→                    <label className="text-[12px] font-roboto font-medium text-fog uppercase tracking-wider">
+   510→                      Slug (URL)
+   511→                    </label>
+   512→                    <button
+   513→                      onClick={copySlug}
+   514→                      className="text-[11px] font-roboto text-steel hover:text-brand-blue-light transition-colors inline-flex items-center gap-1"
+   515→                    >
+   516→                      {copied ? <Check size={10} /> : <Copy size={10} />}
+   517→                      {copied ? 'Copié' : 'Copier'}
+   518→                    </button>
+   519→                  </div>
+   520→                  <div className="flex items-center gap-0">
+   521→                    <span className="bg-white/5 border border-r-0 border-white/10 rounded-l-[2px] px-3 py-2.5 text-[13px] font-roboto text-steel">
+   522→                      /
+   523→                    </span>
+   524→                    <input
+   525→                      type="text"
+   526→                      value={current.slug || ''}
+   527→                      onChange={(e) => setCurrent({ ...current, slug: e.target.value })}
+   528→                      className="flex-1 bg-white/5 border border-white/10 rounded-r-[2px] px-3 py-2.5 text-[13px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   529→                    />
+   530→                  </div>
+   531→                </div>
+   532→                <div>
+   533→                  <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   534→                    Tag / Catégorie
+   535→                  </label>
+   536→                  <input
+   537→                    type="text"
+   538→                    value={current.tag || ''}
+   539→                    onChange={(e) => setCurrent({ ...current, tag: e.target.value })}
+   540→                    placeholder="Ex: Personal Branding"
+   541→                    className="w-full bg-white/5 border border-white/10 rounded-[2px] px-3 py-2.5 text-[13px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   542→                  />
+   543→                </div>
+   544→              </div>
+   545→
+   546→              {/* Excerpt */}
+   547→              <div>
+   548→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   549→                  Extrait (résumé)
+   550→                </label>
+   551→                <textarea
+   552→                  value={current.excerpt || ''}
+   553→                  onChange={(e) => setCurrent({ ...current, excerpt: e.target.value })}
+   554→                  placeholder="Un résumé de 2-3 phrases pour l'accroche de l'article..."
+   555→                  rows={3}
+   556→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none resize-none"
+   557→                />
+   558→                <p className="text-[11px] font-roboto text-steel mt-1">
+   559→                  {(current.excerpt || '').length} caractères — recommandé : 120-200
+   560→                </p>
+   561→              </div>
+   562→
+   563→              {/* Content */}
+   564→              <div>
+   565→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   566→                  Contenu de l&apos;article
+   567→                </label>
+   568→                <textarea
+   569→                  value={current.content || ''}
+   570→                  onChange={(e) => setCurrent({ ...current, content: e.target.value })}
+   571→                  placeholder="Rédigez votre article ici... Vous pouvez utiliser du Markdown."
+   572→                  rows={18}
+   573→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none resize-y leading-relaxed"
+   574→                />
+   575→                <p className="text-[11px] font-roboto text-steel mt-1">
+   576→                  {(current.content || '').length} caractères — {(current.content || '').split(/\s+/).filter(Boolean).length} mots
+   577→                </p>
+   578→              </div>
+   579→
+   580→              {/* Cover Image URL */}
+   581→              <div>
+   582→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   583→                  URL de l&apos;image de couverture
+   584→                </label>
+   585→                <input
+   586→                  type="url"
+   587→                  value={current.coverImage || ''}
+   588→                  onChange={(e) => setCurrent({ ...current, coverImage: e.target.value })}
+   589→                  placeholder="https://exemple.com/image.jpg"
+   590→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-2.5 text-[13px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   591→                />
+   592→              </div>
+   593→            </div>
+   594→          )}
+   595→
+   596→          {/* ============ SEO TAB ============ */}
+   597→          {seoTab === 'seo' && (
+   598→            <div className="flex flex-col gap-5">
+   599→              {/* SEO Score Card */}
+   600→              <div className="bg-white/5 border border-white/10 rounded-[2px] p-5">
+   601→                <div className="flex items-center justify-between mb-4">
+   602→                  <div className="flex items-center gap-3">
+   603→                    <BarChart3 size={20} className="text-brand-blue-light" />
+   604→                    <h3 className="font-oswald font-bold text-[16px] text-white">
+   605→                      Score SEO
+   606→                    </h3>
+   607→                  </div>
+   608→                  <div className={`text-[28px] font-oswald font-bold ${seo.score >= 75 ? 'text-green-400' : seo.score >= 50 ? 'text-brand-yellow-solid' : 'text-red-400'}`}>
+   609→                    {seo.score}%
+   610→                  </div>
+   611→                </div>
+   612→                <div className="flex flex-col gap-2">
+   613→                  {seo.items.map((item, i) => (
+   614→                    <div key={i} className="flex items-center gap-2">
+   615→                      {item.ok ? (
+   616→                        <CheckCircle2 size={14} className="text-green-400 shrink-0" />
+   617→                      ) : (
+   618→                        <AlertCircle size={14} className="text-steel shrink-0" />
+   619→                      )}
+   620→                      <span className={`text-[13px] font-roboto ${item.ok ? 'text-fog' : 'text-steel'}`}>
+   621→                        {item.label}
+   622→                      </span>
+   623→                    </div>
+   624→                  ))}
+   625→                </div>
+   626→              </div>
+   627→
+   628→              {/* Meta Title */}
+   629→              <div>
+   630→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   631→                  Meta Titre (SEO)
+   632→                </label>
+   633→                <input
+   634→                  type="text"
+   635→                  value={current.seoTitle || ''}
+   636→                  onChange={(e) => setCurrent({ ...current, seoTitle: e.target.value })}
+   637→                  placeholder="Titre optimisé pour les moteurs de recherche (30-60 caractères)"
+   638→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   639→                />
+   640→                <div className="flex items-center justify-between mt-1">
+   641→                  <p className="text-[11px] font-roboto text-steel">
+   642→                    Idéal : 30-60 caractères
+   643→                  </p>
+   644→                  <p className={`text-[11px] font-roboto ${(current.seoTitle || '').length >= 30 && (current.seoTitle || '').length <= 60 ? 'text-green-400' : 'text-steel'}`}>
+   645→                    {(current.seoTitle || '').length}/60
+   646→                  </p>
+   647→                </div>
+   648→              </div>
+   649→
+   650→              {/* Meta Description */}
+   651→              <div>
+   652→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   653→                  Meta Description (SEO)
+   654→                </label>
+   655→                <textarea
+   656→                  value={current.seoDescription || ''}
+   657→                  onChange={(e) => setCurrent({ ...current, seoDescription: e.target.value })}
+   658→                  placeholder="Description optimisée pour les moteurs de recherche (50-160 caractères)"
+   659→                  rows={3}
+   660→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none resize-none"
+   661→                />
+   662→                <div className="flex items-center justify-between mt-1">
+   663→                  <p className="text-[11px] font-roboto text-steel">
+   664→                    Idéal : 50-160 caractères
+   665→                  </p>
+   666→                  <p className={`text-[11px] font-roboto ${(current.seoDescription || '').length >= 50 && (current.seoDescription || '').length <= 160 ? 'text-green-400' : 'text-steel'}`}>
+   667→                    {(current.seoDescription || '').length}/160
+   668→                  </p>
+   669→                </div>
+   670→              </div>
+   671→
+   672→              {/* Focus Keyword */}
+   673→              <div>
+   674→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   675→                  Mot-clé focal
+   676→                </label>
+   677→                <input
+   678→                  type="text"
+   679→                  value={current.focusKeyword || ''}
+   680→                  onChange={(e) => setCurrent({ ...current, focusKeyword: e.target.value })}
+   681→                  placeholder="Ex: marketing LinkedIn"
+   682→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   683→                />
+   684→              </div>
+   685→
+   686→              {/* SEO Keywords */}
+   687→              <div>
+   688→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   689→                  Mots-clés (séparés par des virgules)
+   690→                </label>
+   691→                <input
+   692→                  type="text"
+   693→                  value={current.seoKeywords || ''}
+   694→                  onChange={(e) => setCurrent({ ...current, seoKeywords: e.target.value })}
+   695→                  placeholder="Ex: linkedin, personal branding, visibilité, réseau professionnel"
+   696→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none"
+   697→                />
+   698→              </div>
+   699→
+   700→              {/* Google Preview */}
+   701→              <div>
+   702→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-3">
+   703→                  Aperçu Google
+   704→                </label>
+   705→                <div className="bg-white rounded-[2px] p-4 border border-mist">
+   706→                  <p className="text-[12px] font-roboto text-brand-blue truncate">
+   707→                    mauricenontondji.com/{current.slug || 'votre-slug'}
+   708→                  </p>
+   709→                  <p className="text-[18px] font-roboto text-[#1a0dab] mt-1 leading-tight line-clamp-1">
+   710→                    {current.seoTitle || current.title || 'Titre de votre article'}
+   711→                  </p>
+   712→                  <p className="text-[13px] font-roboto text-[#4d5156] mt-1 line-clamp-2 leading-[1.5]">
+   713→                    {current.seoDescription || current.excerpt || 'La meta description de votre article apparaîtra ici...'}
+   714→                  </p>
+   715→                </div>
+   716→              </div>
+   717→            </div>
+   718→          )}
+   719→
+   720→          {/* ============ CORRECTION TAB ============ */}
+   721→          {seoTab === 'correction' && (
+   722→            <div className="flex flex-col gap-5">
+   723→              {/* Status info */}
+   724→              <div className="bg-white/5 border border-white/10 rounded-[2px] p-5">
+   725→                <div className="flex items-center gap-3 mb-3">
+   726→                  <Clock size={18} className="text-brand-blue-light" />
+   727→                  <h3 className="font-oswald font-bold text-[16px] text-white">
+   728→                    Workflow de correction
+   729→                  </h3>
+   730→                </div>
+   731→                <div className="flex items-center gap-4">
+   732→                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-[2px] text-[12px] font-roboto font-medium ${
+   733→                    current.status === 'draft' ? 'bg-white/10 text-white border border-white/20' : 'text-steel'
+   734→                  }`}>
+   735→                    <FileText size={12} />
+   736→                    Brouillon
+   737→                  </div>
+   738→                  <div className="w-8 h-px bg-white/10" />
+   739→                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-[2px] text-[12px] font-roboto font-medium ${
+   740→                    current.status === 'review' ? 'bg-brand-yellow-solid/20 text-brand-yellow-solid border border-brand-yellow-solid/30' : 'text-steel'
+   741→                  }`}>
+   742→                    <AlertCircle size={12} />
+   743→                    Correction
+   744→                  </div>
+   745→                  <div className="w-8 h-px bg-white/10" />
+   746→                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-[2px] text-[12px] font-roboto font-medium ${
+   747→                    current.status === 'published' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'text-steel'
+   748→                  }`}>
+   749→                    <CheckCircle2 size={12} />
+   750→                    Publié
+   751→                  </div>
+   752→                </div>
+   753→              </div>
+   754→
+   755→              {/* Quick status actions */}
+   756→              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+   757→                <button
+   758→                  onClick={() => setCurrent({ ...current, status: 'draft' })}
+   759→                  className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-[2px] text-[13px] font-roboto font-medium border transition-colors ${
+   760→                    current.status === 'draft'
+   761→                      ? 'bg-white/10 text-white border-white/20'
+   762→                      : 'bg-transparent text-fog border-white/10 hover:border-white/20 hover:text-white'
+   763→                  }`}
+   764→                >
+   765→                  <FileText size={14} />
+   766→                  Repasser en brouillon
+   767→                </button>
+   768→                <button
+   769→                  onClick={() => setCurrent({ ...current, status: 'review' })}
+   770→                  className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-[2px] text-[13px] font-roboto font-medium border transition-colors ${
+   771→                    current.status === 'review'
+   772→                      ? 'bg-brand-yellow-solid/20 text-brand-yellow-solid border-brand-yellow-solid/30'
+   773→                      : 'bg-transparent text-fog border-white/10 hover:border-brand-yellow-solid/30 hover:text-brand-yellow-solid'
+   774→                  }`}
+   775→                >
+   776→                  <AlertCircle size={14} />
+   777→                  Envoyer en correction
+   778→                </button>
+   779→                <button
+   780→                  onClick={() => setCurrent({ ...current, status: 'published', publishedAt: new Date().toISOString() })}
+   781→                  className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-[2px] text-[13px] font-roboto font-medium border transition-colors ${
+   782→                    current.status === 'published'
+   783→                      ? 'bg-green-500/10 text-green-400 border-green-500/20'
+   784→                      : 'bg-transparent text-fog border-white/10 hover:border-green-500/20 hover:text-green-400'
+   785→                  }`}
+   786→                >
+   787→                  <Eye size={14} />
+   788→                  Publier
+   789→                </button>
+   790→              </div>
+   791→
+   792→              {/* Correction Notes */}
+   793→              <div>
+   794→                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   795→                  Notes de correction
+   796→                </label>
+   797→                <textarea
+   798→                  value={current.correctionNotes || ''}
+   799→                  onChange={(e) => setCurrent({ ...current, correctionNotes: e.target.value })}
+   800→                  placeholder="Ajoutez vos notes de correction, retours, modifications demandées..."
+   801→                  rows={8}
+   802→                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none resize-y leading-relaxed"
+   803→                />
+   804→                <p className="text-[11px] font-roboto text-steel mt-1">
+   805→                  Ces notes sont internes et ne seront pas affichées publiquement.
+   806→                </p>
+   807→              </div>
+   808→
+   809→              {/* Article preview */}
+   810→              {current.content && (
+   811→                <div>
+   812→                  <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
+   813→                    Aperçu du contenu
+   814→                  </label>
+   815→                  <div className="bg-white/5 border border-white/10 rounded-[2px] p-5 max-h-[400px] overflow-y-auto">
+   816→                    <div className="prose prose-invert prose-sm max-w-none">
+   817→                      {current.content.split('\n').map((line, i) => (
+   818→                        <p key={i} className="text-[14px] font-roboto text-fog leading-relaxed mb-2">
+   819→                          {line || '\u00A0'}
+   820→                        </p>
+   821→                      ))}
+   822→                    </div>
+   823→                  </div>
+   824→                </div>
+   825→              )}
+   826→            </div>
+   827→          )}
+   828→        </div>
+   829→      </div>
+   830→
+   831→      {/* Toast */}
+   832→      {toast && (
+   833→        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white text-pure-black text-[13px] font-roboto font-medium px-4 py-2.5 rounded-[2px] shadow-sm-2 z-10">
+   834→          {toast}
+   835→        </div>
+   836→      )}
+   837→    </div>
+   838→  );
+   839→}

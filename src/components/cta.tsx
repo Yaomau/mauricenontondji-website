@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function CTA() {
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ export default function CTA() {
   };
 
   return (
-    <section id="contact" className="bg-obsidian">
+    <section id="newsletter" className="bg-obsidian">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="max-w-[600px] mx-auto text-center">
           <span className="text-[12px] font-roboto font-medium text-fog uppercase tracking-wider">
@@ -62,6 +63,18 @@ export default function CTA() {
           <p className="text-[12px] font-roboto text-steel mt-4">
             Pas de spam. Désinscription en un clic.
           </p>
+
+          <div className="mt-8 pt-6 border-t border-white/10">
+            <p className="text-[14px] font-roboto text-fog">
+              Vous préférez discuter directement ?{' '}
+              <Link
+                href="/contact"
+                className="text-brand-blue-light hover:underline"
+              >
+                Contactez-moi
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </section>

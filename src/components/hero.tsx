@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ArrowRight, TrendingUp, Users, Eye } from 'lucide-react';
 
 export default function Hero() {
@@ -25,13 +26,13 @@ export default function Hero() {
               des partenariats durables.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
-              <a
-                href="#contact"
+              <Link
+                href="/contact"
                 className="inline-flex items-center justify-center gap-2 bg-brand-blue text-white text-[16px] font-roboto font-medium px-6 py-3 rounded-[2px] shadow-sm hover:bg-brand-blue/90 transition-colors"
               >
                 Réserver un appel découverte
                 <ArrowRight size={18} strokeWidth={2} />
-              </a>
+              </Link>
               <a
                 href="#services"
                 className="inline-flex items-center justify-center text-[14px] font-roboto font-medium text-pure-black border border-brand-blue/30 bg-brand-yellow-solid px-5 py-3 rounded-[2px] hover:border-brand-blue/50 transition-colors"
