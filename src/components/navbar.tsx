@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, FileText } from 'lucide-react';
 
 const navLinks = [
   { label: 'Accueil', href: '#accueil' },
@@ -11,7 +11,7 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onOpenAdmin }: { onOpenAdmin: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -42,9 +42,16 @@ export default function Navbar() {
 
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={onOpenAdmin}
+            className="w-8 h-8 flex items-center justify-center text-steel hover:text-brand-blue border border-mist rounded-[2px] hover:border-brand-blue/30 transition-colors"
+            title="Gestion des articles"
+          >
+            <FileText size={15} />
+          </button>
           <a
             href="#contact"
-            className="text-[14px] font-roboto font-medium text-pure-black border border-pure-black px-5 py-2.5 rounded-[2px] hover:bg-pure-black hover:text-white transition-colors"
+            className="text-[14px] font-roboto font-medium text-white bg-brand-blue px-5 py-2.5 rounded-[2px] hover:bg-brand-blue/90 transition-colors"
           >
             Me contacter
           </a>
@@ -53,7 +60,7 @@ export default function Navbar() {
         {/* Mobile Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-graphite hover:text-pure-black transition-colors"
+          className="md:hidden p-2 text-brand-blue hover:text-brand-blue/70 transition-colors"
           aria-label="Menu"
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -74,10 +81,16 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
+            <button
+              onClick={() => { setMobileOpen(false); onOpenAdmin(); }}
+              className="text-[14px] font-roboto font-medium text-steel border border-mist px-5 py-2.5 rounded-[2px] text-center mt-2"
+            >
+              Gestion des articles
+            </button>
             <a
               href="#contact"
               onClick={() => setMobileOpen(false)}
-              className="text-[14px] font-roboto font-medium text-white bg-pure-black px-5 py-2.5 rounded-[2px] text-center mt-2"
+              className="text-[14px] font-roboto font-medium text-white bg-brand-blue px-5 py-2.5 rounded-[2px] text-center"
             >
               Me contacter
             </a>

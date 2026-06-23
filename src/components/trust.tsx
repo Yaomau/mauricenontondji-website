@@ -23,7 +23,7 @@ export default function Trust() {
           {partners.map((partner) => (
             <div
               key={partner.name}
-              className="flex items-center gap-2 text-pure-black opacity-40 hover:opacity-70 transition-opacity"
+              className="flex items-center gap-2 text-brand-blue opacity-40 hover:opacity-70 transition-opacity"
             >
               <div className="w-8 h-8 border border-current rounded-[2px] flex items-center justify-center">
                 <span className="text-[11px] font-oswald font-bold leading-none">

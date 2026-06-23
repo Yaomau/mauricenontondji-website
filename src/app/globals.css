@@ -23,9 +23,10 @@
   --color-cloud: #edeff2;
   --color-paper: #f7f8fa;
 
-  /* Accent */
-  --color-accent-wash: rgba(1, 118, 204, 0.08);
-  --color-accent-wash-strong: rgba(1, 118, 204, 0.15);
+  /* Accent — Yellow highlight */
+  --color-accent-wash: rgba(255, 250, 0, 0.35);
+  --color-accent-wash-strong: rgba(255, 250, 0, 0.55);
+  --color-accent-yellow-solid: #fffa00;
   --color-badge-slate: #6f6f6f;
 
   /* Typography */
@@ -43,8 +44,8 @@
   --color-input: var(--color-mist);
   --color-ring: var(--color-brand-blue);
 
-  /* Primary actions */
-  --color-primary: var(--color-pure-black);
+  /* Primary actions — Brand Blue */
+  --color-primary: var(--color-brand-blue);
   --color-primary-foreground: var(--brand-white);
   --color-secondary: var(--brand-white);
   --color-secondary-foreground: var(--color-pure-black);
@@ -108,8 +109,8 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Selection color */
+/* Selection color — Brand Blue */
 ::selection {
-  background: rgba(1, 118, 204, 0.15);
+  background: rgba(1, 118, 204, 0.25);
   color: #000000;
 }

@@ -10,7 +10,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left — Headline + CTA */}
           <div className="flex flex-col gap-6">
-            <span className="text-[12px] font-roboto font-medium text-badge-slate uppercase tracking-wider">
+            <span className="inline-block text-[12px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
               Expert LinkedIn & Personal Branding
             </span>
             <h1 className="font-oswald font-bold text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.1] text-pure-black">
@@ -27,14 +27,14 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center gap-2 bg-pure-black text-white text-[16px] font-roboto font-medium px-6 py-3 rounded-[2px] shadow-sm hover:bg-obsidian transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-brand-blue text-white text-[16px] font-roboto font-medium px-6 py-3 rounded-[2px] shadow-sm hover:bg-brand-blue/90 transition-colors"
               >
                 Réserver un appel découverte
                 <ArrowRight size={18} strokeWidth={2} />
               </a>
               <a
                 href="#services"
-                className="inline-flex items-center justify-center text-[14px] font-roboto font-medium text-pure-black border border-mist px-5 py-3 rounded-[2px] hover:border-pure-black transition-colors"
+                className="inline-flex items-center justify-center text-[14px] font-roboto font-medium text-pure-black border border-brand-blue/30 bg-brand-yellow-solid px-5 py-3 rounded-[2px] hover:border-brand-blue/50 transition-colors"
               >
                 Découvrir mes services
               </a>

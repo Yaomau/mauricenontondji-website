@@ -57,14 +57,14 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <a
                 href="#"
-                className="w-8 h-8 border border-white/10 rounded-[2px] flex items-center justify-center text-fog hover:text-white hover:border-white/30 transition-colors"
+                className="w-8 h-8 border border-white/10 rounded-[2px] flex items-center justify-center text-fog hover:text-brand-blue-light hover:border-brand-blue/40 transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={16} />
               </a>
               <a
                 href="#"
-                className="w-8 h-8 border border-white/10 rounded-[2px] flex items-center justify-center text-fog hover:text-white hover:border-white/30 transition-colors"
+                className="w-8 h-8 border border-white/10 rounded-[2px] flex items-center justify-center text-fog hover:text-brand-blue-light hover:border-brand-blue/40 transition-colors"
                 aria-label="Email"
               >
                 <Mail size={16} />
@@ -83,7 +83,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-[14px] font-roboto text-fog hover:text-white transition-colors inline-flex items-center gap-1"
+                      className="text-[14px] font-roboto text-fog hover:text-brand-blue-light transition-colors inline-flex items-center gap-1"
                     >
                       {link.label}
                       {link.href === '#' && <ArrowUpRight size={12} />}

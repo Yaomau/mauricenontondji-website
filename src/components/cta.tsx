@@ -51,7 +51,7 @@ export default function CTA() {
                 />
                 <button
                   type="submit"
-                  className="bg-white text-pure-black text-[16px] font-roboto font-medium px-6 py-3 rounded-[2px] hover:bg-cloud transition-colors shrink-0"
+                  className="bg-brand-yellow-solid text-pure-black text-[16px] font-roboto font-bold px-6 py-3 rounded-[2px] hover:bg-brand-yellow-solid/80 transition-colors shrink-0"
                 >
                   S&apos;inscrire
                 </button>

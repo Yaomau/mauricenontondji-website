@@ -56,8 +56,8 @@ export default function Services() {
             Services
           </span>
           <h2 className="font-oswald font-bold text-[28px] sm:text-[32px] lg:text-[36px] text-white mt-2 leading-[1.2]">
-            Ce que je peux faire{' '}
-            <span className="bg-accent-wash-strong px-2 text-white">pour vous</span>
+            Mes{' '}
+            <span className="bg-accent-wash-strong px-2 text-white">services</span>
           </h2>
           <p className="text-[16px] font-roboto text-fog mt-4 max-w-[600px] leading-[1.5]">
             Un accompagnement complet pour transformer votre présence LinkedIn
@@ -70,9 +70,9 @@ export default function Services() {
           {services.map((service) => (
             <div
               key={service.title}
-              className="border border-white/10 rounded-[2px] p-6 hover:border-white/20 transition-colors group"
+              className="border border-white/10 rounded-[2px] p-6 hover:border-brand-blue/40 transition-colors group"
             >
-              <div className="w-10 h-10 flex items-center justify-center mb-4 text-white">
+              <div className="w-10 h-10 flex items-center justify-center mb-4 bg-brand-blue/15 text-brand-blue-light rounded-[2px]">
                 <service.icon size={22} strokeWidth={1.5} />
               </div>
               <h3 className="font-oswald font-bold text-[20px] text-white mb-3 leading-[1.3]">

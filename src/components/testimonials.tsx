@@ -43,7 +43,7 @@ function StarRating() {
   return (
     <div className="flex items-center gap-0.5">
       {[...Array(5)].map((_, i) => (
-        <Star key={i} size={14} className="text-pure-black fill-pure-black" />
+        <Star key={i} size={14} className="text-brand-blue fill-brand-blue" />
       ))}
     </div>
   );
@@ -77,7 +77,7 @@ export default function Testimonials() {
             >
               {/* Quote icon + Rating */}
               <div className="flex items-start justify-between mb-4">
-                <Quote size={20} className="text-mist" />
+                <Quote size={20} className="text-brand-blue/20" />
                 <StarRating />
               </div>
 
@@ -88,8 +88,8 @@ export default function Testimonials() {
 
               {/* Author */}
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-mist">
-                <div className="w-10 h-10 bg-cloud border border-mist rounded-[2px] flex items-center justify-center shrink-0">
-                  <span className="text-[12px] font-oswald font-bold text-graphite">
+                <div className="w-10 h-10 bg-brand-blue/10 border border-brand-blue/20 rounded-[2px] flex items-center justify-center shrink-0">
+                  <span className="text-[12px] font-oswald font-bold text-brand-blue">
                     {testimonial.initials}
                   </span>
                 </div>
