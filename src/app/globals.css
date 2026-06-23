@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Brand Colors */
+  --color-brand-blue: #0176cc;
+  --color-brand-blue-light: #56d1f7;
+  --color-brand-yellow: #fffa00;
+  --color-brand-white: #ffffff;
+
+  /* Glassnode-style Neutrals */
+  --color-pure-black: #000000;
+  --color-obsidian: #1a1a1a;
+  --color-graphite: #333333;
+  --color-iron: #5a5a5a;
+  --color-slate: #666666;
+  --color-steel: #808080;
+  --color-fog: #a0a0a0;
+  --color-ash: #bfbfbf;
+  --color-mist: #dedfe1;
+  --color-cloud: #edeff2;
+  --color-paper: #f7f8fa;
+
+  /* Accent */
+  --color-accent-wash: rgba(1, 118, 204, 0.08);
+  --color-accent-wash-strong: rgba(1, 118, 204, 0.15);
+  --color-badge-slate: #6f6f6f;
+
+  /* Typography */
+  --font-oswald: 'Oswald', ui-sans-serif, system-ui, sans-serif;
+  --font-roboto: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+
+  /* Surfaces */
+  --color-background: var(--color-cloud);
+  --color-foreground: var(--color-pure-black);
+  --color-card: var(--brand-white);
+  --color-card-foreground: var(--color-pure-black);
+  --color-muted: var(--color-paper);
+  --color-muted-foreground: var(--color-iron);
+  --color-border: var(--color-mist);
+  --color-input: var(--color-mist);
+  --color-ring: var(--color-brand-blue);
+
+  /* Primary actions */
+  --color-primary: var(--color-pure-black);
+  --color-primary-foreground: var(--brand-white);
+  --color-secondary: var(--brand-white);
+  --color-secondary-foreground: var(--color-pure-black);
+  --color-accent: var(--color-accent-wash);
+  --color-accent-foreground: var(--color-pure-black);
+
+  /* Layout tokens */
+  --color-popover: var(--brand-white);
+  --color-popover-foreground: var(--color-pure-black);
+  --color-destructive: #dc2626;
+
+  /* Radius */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius: 2px;
+
+  /* Shadows */
+  --shadow-sm: rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
+  --shadow-sm-2: rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.08) 0px 8px 32px 0px;
+
+  /* Charts */
+  --color-chart-1: var(--color-brand-blue);
+  --color-chart-2: var(--color-brand-blue-light);
+  --color-chart-3: #4a6cf7;
+  --color-chart-4: var(--color-iron);
+  --color-chart-5: var(--color-steel);
+}
+
+:root {
+  --radius: 2px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-roboto;
+  }
+}
+
+/* Custom scrollbar for a cleaner look */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cloud);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ash);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-steel);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(1, 118, 204, 0.15);
+  color: #000000;
+}
