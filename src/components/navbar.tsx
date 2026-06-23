@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, FileText } from 'lucide-react';
 
 const navLinks = [
-  { label: 'Accueil', href: '/', activeOn: '/' },
-  { label: 'Services', href: '/#services' },
-  { label: 'Articles', href: '/articles', activeOn: '/articles' },
-  { label: 'Témoignages', href: '/#temoignages' },
-  { label: 'Contact', href: '/contact', activeOn: '/contact' },
+  { label: 'Accueil', href: '/', activeOn: '/', hash: '' },
+  { label: 'Services', href: '/#services', activeOn: undefined, hash: '#services' },
+  { label: 'Articles', href: '/articles', activeOn: '/articles', hash: '' },
+  { label: 'Témoignages', href: '/#temoignages', activeOn: undefined, hash: '#temoignages' },
+  { label: 'Contact', href: '/contact', activeOn: '/contact', hash: '' },
 ];
 
 export default function Navbar({
@@ -22,6 +22,7 @@ export default function Navbar({
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (link: (typeof navLinks)[number]) => {
     if (link.activeOn) {
@@ -30,7 +31,65 @@ export default function Navbar({
     return false;
   };
 
-  const isHome = currentPage === 'home' || !currentPage || pathname === '/';
+  const scrollToHash = useCallback((hash: string) => {
+    if (!hash) return;
+    const id = hash.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+
+  const handleNav = useCallback(
+    (e: React.MouseEvent, link: (typeof navLinks)[number]) => {
+      e.preventDefault();
+      setMobileOpen(false);
+
+      const isHome = pathname === '/';
+
+      // If link has a hash target and we're already on home, just scroll
+      if (link.hash && isHome) {
+        scrollToHash(link.hash);
+        window.history.replaceState(null, '', link.hash);
+        return;
+      }
+
+      // If link has a hash target but we're on another page,
+      // navigate to home first then scroll after render
+      if (link.hash && !isHome) {
+        router.push('/');
+        // Wait for the home page to render, then scroll
+        const checkAndScroll = () => {
+          const id = link.hash!.replace('#', '');
+          const el = document.getElementById(id);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+            window.history.replaceState(null, '', link.hash);
+          } else {
+            // Element not yet rendered, retry after a short delay
+            setTimeout(checkAndScroll, 100);
+          }
+        };
+        setTimeout(checkAndScroll, 150);
+        return;
+      }
+
+      // For regular page links (Articles, Contact, Accueil), use router
+      router.push(link.href);
+    },
+    [pathname, router, scrollToHash],
+  );
+
+  const handleContactCta = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      setMobileOpen(false);
+      if (pathname !== '/contact') {
+        router.push('/contact');
+      }
+    },
+    [pathname, router],
+  );
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-mist">
@@ -51,15 +110,16 @@ export default function Navbar({
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-[29px]">
           {navLinks.map((link) => (
-            <Link
+            <a
               key={link.href}
               href={link.href}
-              className={`text-[14px] font-roboto font-medium transition-colors ${
+              onClick={(e) => handleNav(e, link)}
+              className={`text-[14px] font-roboto font-medium transition-colors cursor-pointer ${
                 isActive(link) ? 'text-pure-black' : 'text-graphite hover:text-pure-black'
               }`}
             >
               {link.label}
-            </Link>
+            </a>
           ))}
         </div>
 
@@ -72,12 +132,13 @@ export default function Navbar({
           >
             <FileText size={15} />
           </button>
-          <Link
+          <a
             href="/contact"
-            className="text-[14px] font-roboto font-medium text-white bg-brand-blue px-5 py-2.5 rounded-[2px] hover:bg-brand-blue/90 transition-colors"
+            onClick={handleContactCta}
+            className="text-[14px] font-roboto font-medium text-white bg-brand-blue px-5 py-2.5 rounded-[2px] hover:bg-brand-blue/90 transition-colors cursor-pointer"
           >
             Me contacter
-          </Link>
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -95,16 +156,16 @@ export default function Navbar({
         <div className="md:hidden bg-white border-t border-mist">
           <div className="px-4 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className={`text-[14px] font-roboto font-medium py-2 transition-colors ${
+                onClick={(e) => handleNav(e, link)}
+                className={`text-[14px] font-roboto font-medium py-2 transition-colors cursor-pointer ${
                   isActive(link) ? 'text-pure-black' : 'text-graphite hover:text-pure-black'
                 }`}
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
             <button
               onClick={() => { setMobileOpen(false); onOpenAdmin(); }}
@@ -112,13 +173,13 @@ export default function Navbar({
             >
               Gestion des articles
             </button>
-            <Link
+            <a
               href="/contact"
-              onClick={() => setMobileOpen(false)}
-              className="text-[14px] font-roboto font-medium text-white bg-brand-blue px-5 py-2.5 rounded-[2px] text-center"
+              onClick={handleContactCta}
+              className="text-[14px] font-roboto font-medium text-white bg-brand-blue px-5 py-2.5 rounded-[2px] text-center cursor-pointer"
             >
               Me contacter
-            </Link>
+            </a>
           </div>
         </div>
       )}

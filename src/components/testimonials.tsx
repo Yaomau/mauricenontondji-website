@@ -58,10 +58,6 @@ export default function Testimonials() {
           <span className="text-[12px] font-roboto font-medium text-badge-slate uppercase tracking-wider">
             Témoignages
           </span>
-          <h2 className="font-oswald font-bold text-[28px] sm:text-[32px] lg:text-[36px] text-pure-black mt-2 leading-[1.2]">
-            Ce que disent{' '}
-            <span className="bg-accent-wash-strong px-2">mes clients</span>
-          </h2>
           <p className="text-[16px] font-roboto text-iron mt-4 max-w-[550px] mx-auto leading-[1.5]">
             Des entrepreneurs et dirigeants qui ont transformé leur présence
             LinkedIn grâce à un accompagnement sur mesure.
