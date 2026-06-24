@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import RichEditor from '@/components/rich-editor';
 import {
   X,
   Plus,
@@ -560,21 +561,22 @@ export default function ArticleAdmin({ onClose }: { onClose: () => void }) {
                 </p>
               </div>
 
-              {/* Content */}
+              {/* Content — Rich Editor */}
               <div>
-                <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
-                  Contenu de l&apos;article
-                </label>
-                <textarea
-                  value={current.content || ''}
-                  onChange={(e) => setCurrent({ ...current, content: e.target.value })}
-                  placeholder="Rédigez votre article ici... Vous pouvez utiliser du Markdown."
-                  rows={18}
-                  className="w-full bg-white/5 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white placeholder:text-steel focus:border-brand-blue/50 focus:outline-none resize-y leading-relaxed"
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider">
+                    Contenu de l&apos;article
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[11px] font-roboto text-steel">
+                      {current.content ? current.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length : 0} mots
+                    </span>
+                  </div>
+                </div>
+                <RichEditor
+                  html={current.content || ''}
+                  onChange={(htmlContent) => setCurrent({ ...current, content: htmlContent })}
                 />
-                <p className="text-[11px] font-roboto text-steel mt-1">
-                  {(current.content || '').length} caractères — {(current.content || '').split(/\s+/).filter(Boolean).length} mots
-                </p>
               </div>
 
               {/* Cover Image URL */}
@@ -810,16 +812,12 @@ export default function ArticleAdmin({ onClose }: { onClose: () => void }) {
               {current.content && (
                 <div>
                   <label className="block text-[12px] font-roboto font-medium text-fog uppercase tracking-wider mb-2">
-                    Aperçu du contenu
+                    Aperçu du contenu (HTML)
                   </label>
-                  <div className="bg-white/5 border border-white/10 rounded-[2px] p-5 max-h-[400px] overflow-y-auto">
-                    <div className="prose prose-invert prose-sm max-w-none">
-                      {current.content.split('\n').map((line, i) => (
-                        <p key={i} className="text-[14px] font-roboto text-fog leading-relaxed mb-2">
-                          {line || '\u00A0'}
-                        </p>
-                      ))}
-                    </div>
+                  <div className="bg-white/5 border border-white/10 rounded-[2px] p-5 max-h-[300px] overflow-y-auto">
+                    <pre className="text-[13px] font-mono text-fog leading-relaxed whitespace-pre-wrap break-words">
+                      {current.content}
+                    </pre>
                   </div>
                 </div>
               )}

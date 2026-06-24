@@ -165,3 +165,530 @@ html {
 .dark .text-green-600 {
   color: #4ade80;
 }
+
+/* ====== TipTap Rich Editor — Admin Dark Theme ====== */
+.rich-editor-wrapper {
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #111111;
+  font-family: var(--font-roboto);
+  min-height: 500px;
+}
+
+/* TipTap EditorContent wrapper */
+.rich-editor-wrapper .tiptap {
+  font-family: var(--font-roboto);
+  font-size: 15px;
+  line-height: 1.75;
+  color: #e0e0e0;
+  padding: 20px 24px;
+  min-height: 460px;
+  outline: none;
+}
+
+/* Placeholder */
+.rich-editor-wrapper .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #666666;
+  pointer-events: none;
+  height: 0;
+}
+
+/* ---- Headings ---- */
+.rich-editor-wrapper .tiptap h1 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #ffffff;
+  margin: 24px 0 12px;
+}
+
+.rich-editor-wrapper .tiptap h2 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 20px 0 10px;
+}
+
+.rich-editor-wrapper .tiptap h3 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.3;
+  color: #ffffff;
+  margin: 16px 0 8px;
+}
+
+.rich-editor-wrapper .tiptap h4 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.3;
+  color: #e0e0e0;
+  margin: 14px 0 6px;
+}
+
+.rich-editor-wrapper .tiptap h5 {
+  font-family: var(--font-oswald);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #e0e0e0;
+  margin: 12px 0 6px;
+}
+
+/* ---- Paragraph ---- */
+.rich-editor-wrapper .tiptap p {
+  margin: 0 0 12px;
+  color: #d0d0d0;
+}
+
+/* ---- Inline formatting ---- */
+.rich-editor-wrapper .tiptap strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.rich-editor-wrapper .tiptap em {
+  font-style: italic;
+}
+
+.rich-editor-wrapper .tiptap u {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.rich-editor-wrapper .tiptap s {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.rich-editor-wrapper .tiptap sup {
+  font-size: 0.75em;
+  vertical-align: super;
+}
+
+.rich-editor-wrapper .tiptap sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+}
+
+/* ---- Links ---- */
+.rich-editor-wrapper .tiptap a {
+  color: #56d1f7;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.rich-editor-wrapper .tiptap a:hover {
+  color: #7dd8fa;
+}
+
+/* ---- Blockquote ---- */
+.rich-editor-wrapper .tiptap blockquote {
+  border-left: 3px solid #0176cc;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: rgba(1, 118, 204, 0.08);
+  border-radius: 0 2px 2px 0;
+  color: #b0b0b0;
+}
+
+/* ---- Lists ---- */
+.rich-editor-wrapper .tiptap ul {
+  padding-left: 24px;
+  margin: 8px 0 12px;
+  color: #d0d0d0;
+  list-style-type: disc;
+}
+
+.rich-editor-wrapper .tiptap ol {
+  padding-left: 24px;
+  margin: 8px 0 12px;
+  color: #d0d0d0;
+  list-style-type: decimal;
+}
+
+.rich-editor-wrapper .tiptap li {
+  margin-bottom: 4px;
+}
+
+.rich-editor-wrapper .tiptap li p {
+  margin: 0;
+}
+
+/* ---- Code ---- */
+.rich-editor-wrapper .tiptap code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 13px;
+  color: #56d1f7;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.rich-editor-wrapper .tiptap pre {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.rich-editor-wrapper .tiptap pre code {
+  background: none;
+  padding: 0;
+  color: #d0d0d0;
+  font-size: 13px;
+}
+
+/* ---- Images ---- */
+.rich-editor-wrapper .tiptap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  margin: 12px 0;
+}
+
+/* ---- Videos ---- */
+.rich-editor-wrapper .tiptap video {
+  max-width: 100%;
+  border-radius: 2px;
+  margin: 12px 0;
+}
+
+/* ---- Iframes / Embeds ---- */
+.rich-editor-wrapper .tiptap iframe {
+  max-width: 100%;
+  border-radius: 2px;
+  margin: 12px 0;
+}
+
+/* ---- YouTube embeds ---- */
+.rich-editor-wrapper .tiptap div[data-youtube-video] {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 16px 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.rich-editor-wrapper .tiptap div[data-youtube-video] iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ---- Tables ---- */
+.rich-editor-wrapper .tiptap table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.rich-editor-wrapper .tiptap th,
+.rich-editor-wrapper .tiptap td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  text-align: left;
+  min-width: 80px;
+}
+
+.rich-editor-wrapper .tiptap th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.rich-editor-wrapper .tiptap td {
+  color: #d0d0d0;
+}
+
+/* Selected table cell */
+.rich-editor-wrapper .tiptap td.selectedCell,
+.rich-editor-wrapper .tiptap th.selectedCell {
+  background: rgba(1, 118, 204, 0.15);
+  border-color: rgba(1, 118, 204, 0.4);
+}
+
+/* ---- Horizontal rule ---- */
+.rich-editor-wrapper .tiptap hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin: 24px 0;
+}
+
+/* ---- Mark / Highlight ---- */
+.rich-editor-wrapper .tiptap mark {
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* ---- Selection ---- */
+.rich-editor-wrapper .tiptap ::selection {
+  background: rgba(1, 118, 204, 0.35);
+  color: #ffffff;
+}
+
+/* ---- Focus outline ---- */
+.rich-editor-wrapper .tiptap:focus {
+  outline: none;
+}
+
+/* ====== Article Content (Public-facing) — HTML Rendering ====== */
+.article-content h1 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--color-pure-black);
+  margin: 32px 0 16px;
+}
+
+:root .article-content h1 { color: #000000; }
+.dark .article-content h1 { color: #ffffff; }
+
+.article-content h2 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--color-pure-black);
+  margin: 28px 0 12px;
+}
+
+:root .article-content h2 { color: #000000; }
+.dark .article-content h2 { color: #ffffff; }
+
+.article-content h3 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.3;
+  color: var(--color-pure-black);
+  margin: 24px 0 10px;
+}
+
+:root .article-content h3 { color: #000000; }
+.dark .article-content h3 { color: #ffffff; }
+
+.article-content h4 {
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--color-graphite);
+  margin: 20px 0 8px;
+}
+
+.article-content h5 {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-graphite);
+  margin: 18px 0 8px;
+}
+
+.article-content p {
+  font-family: var(--font-roboto);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-graphite);
+  margin: 0 0 16px;
+}
+
+.article-content a {
+  color: var(--color-brand-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: all 0.15s;
+}
+
+.article-content a:hover {
+  text-decoration: none;
+}
+
+.article-content strong {
+  color: var(--color-pure-black);
+  font-weight: 700;
+}
+
+:root .article-content strong { color: #000000; }
+.dark .article-content strong { color: #ffffff; }
+
+.article-content em {
+  font-style: italic;
+}
+
+.article-content u {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-content s {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.article-content sup {
+  font-size: 0.75em;
+  vertical-align: super;
+}
+
+.article-content sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+}
+
+.article-content blockquote {
+  border-left: 3px solid var(--color-brand-blue);
+  padding: 12px 20px;
+  margin: 20px 0;
+  background: rgba(1, 118, 204, 0.05);
+  border-radius: 0 2px 2px 0;
+  color: var(--color-iron);
+}
+
+.article-content ul {
+  padding-left: 24px;
+  margin: 12px 0 16px;
+  color: var(--color-graphite);
+  list-style-type: disc;
+}
+
+.article-content ol {
+  padding-left: 24px;
+  margin: 12px 0 16px;
+  color: var(--color-graphite);
+  list-style-type: decimal;
+}
+
+.article-content li {
+  font-family: var(--font-roboto);
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.article-content li p {
+  margin: 0;
+}
+
+.article-content code {
+  background: var(--color-paper);
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 14px;
+  color: var(--color-brand-blue);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.article-content pre {
+  background: var(--color-paper);
+  border: 1px solid var(--color-mist);
+  border-radius: 2px;
+  padding: 20px;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.article-content pre code {
+  background: none;
+  padding: 0;
+  color: var(--color-graphite);
+  font-size: 13px;
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  margin: 16px 0;
+  border: 1px solid var(--color-mist);
+}
+
+.article-content video {
+  max-width: 100%;
+  border-radius: 2px;
+  margin: 16px 0;
+  border: 1px solid var(--color-mist);
+}
+
+.article-content iframe {
+  max-width: 100%;
+  border-radius: 2px;
+  margin: 16px 0;
+}
+
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  border: 1px solid var(--color-mist);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.article-content th {
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 700;
+  color: var(--color-pure-black);
+  background: var(--color-paper);
+  border-bottom: 1px solid var(--color-mist);
+}
+
+.article-content td {
+  padding: 10px 14px;
+  color: var(--color-graphite);
+  border-bottom: 1px solid var(--color-mist);
+}
+
+.article-content td:last-child,
+.article-content th:last-child {
+  border-bottom: none;
+}
+
+.article-content hr {
+  border: none;
+  border-top: 1px solid var(--color-mist);
+  margin: 28px 0;
+}
+
+.article-content mark {
+  border-radius: 2px;
+  padding: 1px 3px;
+}
+
+.article-content .youtube-embed-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 20px 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.article-content .youtube-embed-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+}

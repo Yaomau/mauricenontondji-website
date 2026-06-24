@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Calendar, Tag } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, Clock } from 'lucide-react';
 import SiteShell from '@/components/site-shell';
+import ArticleContent from '@/components/article-content';
 
 interface Article {
   id: string;
@@ -124,18 +125,7 @@ export default function ArticleDetailPage() {
               )}
 
               {/* Content */}
-              <div className="prose-article">
-                {article.content ? (
-                  <div
-                    className="text-[16px] font-roboto text-graphite leading-[1.75] space-y-4"
-                    dangerouslySetInnerHTML={{ __html: article.content }}
-                  />
-                ) : (
-                  <p className="text-[16px] font-roboto text-iron">
-                    Le contenu de cet article sera bientôt disponible.
-                  </p>
-                )}
-              </div>
+              <ArticleContent content={article.content || ''} />
 
               {/* Bottom CTA */}
               <div className="mt-12 pt-8 border-t border-mist">

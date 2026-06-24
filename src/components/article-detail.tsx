@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
+import ArticleContent from '@/components/article-content';
 
 interface Article {
   id: string;
@@ -163,62 +164,7 @@ export default function ArticleDetail({
         )}
 
         {/* Content */}
-        <div>
-          {article.content?.split('\n').map((paragraph, i) => {
-            const trimmed = paragraph.trim();
-            if (!trimmed) return <br key={i} />;
-            if (trimmed.startsWith('### '))
-              return (
-                <h3 key={i} className="font-oswald font-bold text-[22px] text-pure-black mt-8 mb-3 leading-[1.3]">
-                  {trimmed.slice(4)}
-                </h3>
-              );
-            if (trimmed.startsWith('## '))
-              return (
-                <h2 key={i} className="font-oswald font-bold text-[26px] text-pure-black mt-10 mb-4 leading-[1.2]">
-                  {trimmed.slice(3)}
-                </h2>
-              );
-            if (trimmed.startsWith('# '))
-              return (
-                <h1 key={i} className="font-oswald font-bold text-[32px] text-pure-black mt-10 mb-4 leading-[1.2]">
-                  {trimmed.slice(2)}
-                </h1>
-              );
-            if (trimmed.startsWith('- ') || trimmed.startsWith('* '))
-              return (
-                <div key={i} className="flex gap-3 mb-2 ml-2">
-                  <span className="w-1.5 h-1.5 bg-brand-blue rounded-full mt-2 shrink-0" />
-                  <p className="text-[16px] font-roboto text-graphite leading-[1.7] flex-1">
-                    {trimmed.slice(2)}
-                  </p>
-                </div>
-              );
-            if (/^\d+\.\s/.test(trimmed)) {
-              const num = trimmed.match(/^(\d+)\.\s/)?.[1];
-              return (
-                <div key={i} className="flex gap-3 mb-2 ml-2">
-                  <span className="text-[14px] font-oswald font-bold text-brand-blue shrink-0 mt-0.5">
-                    {num}.
-                  </span>
-                  <p className="text-[16px] font-roboto text-graphite leading-[1.7] flex-1">
-                    {trimmed.replace(/^\d+\.\s/, '')}
-                  </p>
-                </div>
-              );
-            }
-            const parts = trimmed.split(/(\*\*[^*]+\*\*)/g);
-            return (
-              <p key={i} className="text-[16px] font-roboto text-graphite leading-[1.8] mb-4">
-                {parts.map((part, j) => {
-                  if (part.startsWith('**') && part.endsWith('**'))
-                    return <strong key={j} className="font-bold text-pure-black">{part.slice(2, -2)}</strong>;
-                  return part;
-                })}
-              </p>
-            );
-          })}
-        </div>
+        <ArticleContent content={article.content || ''} />
 
         {/* Bottom CTA */}
         <div className="mt-12 pt-8 border-t border-mist">
