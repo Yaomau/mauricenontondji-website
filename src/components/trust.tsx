@@ -44,10 +44,10 @@ export default function Trust() {
     <section className="bg-cloud">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div className="text-center mb-10 sm:mb-14">
-          <p className="text-[16px] font-roboto font-medium text-steel mb-2">
+          <p className="text-[18px] font-roboto font-medium text-steel mb-2">
             Ils me font confiance
           </p>
-          <p className="text-[15px] font-roboto text-ash">
+          <p className="text-[16px] font-roboto text-ash">
             Entreprises et organisations qui ont fait appel à mon expertise
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function Trust() {
                 </div>
               ) : (
                 <div className="flex items-center justify-center">
-                  <span className="text-[18px] sm:text-[20px] font-oswald font-bold text-steel leading-none">
+                  <span className="text-[20px] sm:text-[22px] font-oswald font-bold text-steel leading-none">
                     {partner.name}
                   </span>
                 </div>

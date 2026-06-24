@@ -51,7 +51,7 @@ export default function Footer() {
                 maurice nontondji
               </span>
             </Link>
-            <p className="text-[15px] font-roboto text-fog leading-[1.6] mb-4 max-w-[260px]">
+            <p className="text-[16px] font-roboto text-fog leading-[1.6] mb-4 max-w-[260px]">
               Expert LinkedIn & Stratégie Digitale. J&apos;aide les entrepreneurs à
               transformer leur visibilité en opportunités business.
             </p>
@@ -76,7 +76,7 @@ export default function Footer() {
           {/* Link Columns */}
           {Object.values(footerLinks).map((col) => (
             <div key={col.title}>
-              <h4 className="text-[15px] font-roboto font-bold text-white mb-4">
+              <h4 className="text-[16px] font-roboto font-bold text-white mb-4">
                 {col.title}
               </h4>
               <ul className="flex flex-col gap-2.5">
@@ -84,7 +84,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-[15px] font-roboto text-fog hover:text-brand-blue-light transition-colors inline-flex items-center gap-1"
+                      className="text-[16px] font-roboto text-fog hover:text-brand-blue-light transition-colors inline-flex items-center gap-1"
                     >
                       {link.label}
                       {link.href === '#' && <ArrowUpRight size={12} />}
@@ -98,14 +98,14 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[13px] font-roboto text-steel">
+          <p className="text-[14px] font-roboto text-steel">
             &copy; {new Date().getFullYear()} Maurice Nontondji. Tous droits réservés.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-[13px] font-roboto text-steel hover:text-fog transition-colors">
+            <a href="#" className="text-[14px] font-roboto text-steel hover:text-fog transition-colors">
               Mentions légales
             </a>
-            <a href="#" className="text-[13px] font-roboto text-steel hover:text-fog transition-colors">
+            <a href="#" className="text-[14px] font-roboto text-steel hover:text-fog transition-colors">
               Politique de confidentialité
             </a>
           </div>

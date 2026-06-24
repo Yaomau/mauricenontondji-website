@@ -113,16 +113,16 @@ export default function Articles() {
                 <div className="w-full h-full bg-gradient-to-br from-cloud to-mist opacity-60" />
               </div>
 
-              <span className="text-[13px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
+              <span className="text-[14px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
                 {article.tag}
               </span>
-              <h3 className="font-oswald font-bold text-[18px] sm:text-[20px] text-pure-black mt-2 mb-2 leading-[1.3] line-clamp-3 group-hover:text-brand-blue transition-colors">
+              <h3 className="font-oswald font-bold text-[20px] sm:text-[22px] text-pure-black mt-2 mb-2 leading-[1.3] line-clamp-3 group-hover:text-brand-blue transition-colors">
                 {article.title}
               </h3>
-              <p className="text-[15px] font-roboto text-iron leading-[1.6] line-clamp-3 mb-4 flex-1">
+              <p className="text-[16px] font-roboto text-iron leading-[1.6] line-clamp-3 mb-4 flex-1">
                 {article.excerpt}
               </p>
-              <p className="text-[13px] font-roboto text-steel">
+              <p className="text-[14px] font-roboto text-steel">
                 {article.date}
               </p>
             </Link>
