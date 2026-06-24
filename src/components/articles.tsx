@@ -80,20 +80,20 @@ export default function Articles() {
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10 sm:mb-12 gap-4">
           <div>
-            <span className="text-[12px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
+            <span className="text-[14px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
               Blog
             </span>
-            <h2 className="font-oswald font-bold text-[28px] sm:text-[32px] text-pure-black mt-2 leading-[1.2]">
+            <h2 className="font-oswald font-bold text-[30px] sm:text-[36px] text-pure-black mt-2 leading-[1.2]">
               Derniers articles
             </h2>
-            <p className="text-[16px] font-roboto text-iron mt-3 max-w-[500px] leading-[1.5]">
+            <p className="text-[18px] font-roboto text-iron mt-3 max-w-[500px] leading-[1.6]">
               Réflexions, stratégies et conseils pratiques pour maîtriser LinkedIn
               et développer votre réseau professionnel.
             </p>
           </div>
           <Link
             href="/articles"
-            className="inline-flex items-center gap-1 text-[14px] font-roboto font-medium text-brand-blue border border-brand-blue/30 px-5 py-2.5 rounded-[2px] hover:border-brand-blue transition-colors self-start sm:self-auto"
+            className="inline-flex items-center gap-1 text-[16px] font-roboto font-medium text-brand-blue border border-brand-blue/30 px-6 py-3 rounded-[2px] hover:border-brand-blue transition-colors self-start sm:self-auto"
           >
             Voir tous les articles
             <ArrowUpRight size={16} />
@@ -113,16 +113,16 @@ export default function Articles() {
                 <div className="w-full h-full bg-gradient-to-br from-cloud to-mist opacity-60" />
               </div>
 
-              <span className="text-[12px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
+              <span className="text-[13px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
                 {article.tag}
               </span>
-              <h3 className="font-oswald font-bold text-[16px] sm:text-[18px] text-pure-black mt-2 mb-2 leading-[1.3] line-clamp-3 group-hover:text-brand-blue transition-colors">
+              <h3 className="font-oswald font-bold text-[18px] sm:text-[20px] text-pure-black mt-2 mb-2 leading-[1.3] line-clamp-3 group-hover:text-brand-blue transition-colors">
                 {article.title}
               </h3>
-              <p className="text-[14px] font-roboto text-iron leading-[1.5] line-clamp-3 mb-4 flex-1">
+              <p className="text-[15px] font-roboto text-iron leading-[1.6] line-clamp-3 mb-4 flex-1">
                 {article.excerpt}
               </p>
-              <p className="text-[12px] font-roboto text-steel">
+              <p className="text-[13px] font-roboto text-steel">
                 {article.date}
               </p>
             </Link>

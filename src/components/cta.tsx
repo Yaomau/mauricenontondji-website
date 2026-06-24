@@ -19,14 +19,14 @@ export default function CTA() {
     <section id="newsletter" className="bg-obsidian">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="max-w-[600px] mx-auto text-center">
-          <span className="text-[12px] font-roboto font-medium text-fog uppercase tracking-wider">
+          <span className="text-[14px] font-roboto font-medium text-fog uppercase tracking-wider">
             Newsletter
           </span>
-          <h2 className="font-oswald font-bold text-[28px] sm:text-[32px] text-white mt-2 leading-[1.2]">
+          <h2 className="font-oswald font-bold text-[30px] sm:text-[36px] text-white mt-2 leading-[1.2]">
             Recevez mes meilleurs{' '}
             <span className="bg-accent-wash-strong px-2 text-white">conseils LinkedIn</span>
           </h2>
-          <p className="text-[16px] font-roboto text-fog mt-4 leading-[1.5]">
+          <p className="text-[18px] font-roboto text-fog mt-4 leading-[1.6]">
             Chaque semaine, recevez des stratégies concrètes, des analyses de
             l&apos;algorithme et des templates de publications pour développer votre
             présence sur LinkedIn.
@@ -37,7 +37,7 @@ export default function CTA() {
             className="mt-8 flex flex-col sm:flex-row gap-3 max-w-[480px] mx-auto"
           >
             {submitted ? (
-              <div className="w-full bg-white/10 border border-white/10 rounded-[2px] px-4 py-3 text-[14px] font-roboto text-white">
+              <div className="w-full bg-white/10 border border-white/10 rounded-[2px] px-4 py-3 text-[16px] font-roboto text-white">
                 Merci ! Vous êtes inscrit(e) à la newsletter.
               </div>
             ) : (
@@ -48,11 +48,11 @@ export default function CTA() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="votre@email.com"
                   required
-                  className="flex-1 bg-card border border-mist rounded-[2px] px-4 py-3 text-[14px] font-roboto text-pure-black placeholder:text-steel focus:border-pure-black focus:outline-none"
+                  className="flex-1 bg-card border border-mist rounded-[2px] px-4 py-3.5 text-[16px] font-roboto text-pure-black placeholder:text-steel focus:border-pure-black focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="bg-brand-yellow-solid text-obsidian text-[16px] font-roboto font-bold px-6 py-3 rounded-[2px] hover:bg-brand-yellow-solid/80 transition-colors shrink-0"
+                  className="bg-brand-yellow-solid text-obsidian text-[18px] font-roboto font-bold px-7 py-3.5 rounded-[2px] hover:bg-brand-yellow-solid/80 transition-colors shrink-0"
                 >
                   S&apos;inscrire
                 </button>
@@ -60,12 +60,12 @@ export default function CTA() {
             )}
           </form>
 
-          <p className="text-[12px] font-roboto text-steel mt-4">
+          <p className="text-[14px] font-roboto text-steel mt-4">
             Pas de spam. Désinscription en un clic.
           </p>
 
           <div className="mt-8 pt-6 border-t border-white/10">
-            <p className="text-[14px] font-roboto text-fog">
+            <p className="text-[16px] font-roboto text-fog">
               Vous préférez discuter directement ?{' '}
               <Link
                 href="/contact"

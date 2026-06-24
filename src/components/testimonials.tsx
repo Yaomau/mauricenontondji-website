@@ -55,10 +55,10 @@ export default function Testimonials() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16">
-          <span className="text-[12px] font-roboto font-medium text-badge-slate uppercase tracking-wider">
+          <span className="text-[14px] font-roboto font-medium text-badge-slate uppercase tracking-wider">
             Témoignages
           </span>
-          <p className="text-[16px] font-roboto text-iron mt-4 max-w-[550px] mx-auto leading-[1.5]">
+          <p className="text-[18px] font-roboto text-iron mt-4 max-w-[550px] mx-auto leading-[1.6]">
             Des entrepreneurs et dirigeants qui ont transformé leur présence
             LinkedIn grâce à un accompagnement sur mesure.
           </p>
@@ -78,22 +78,22 @@ export default function Testimonials() {
               </div>
 
               {/* Text */}
-              <p className="text-[14px] font-roboto text-iron leading-[1.6] flex-1">
+              <p className="text-[16px] font-roboto text-iron leading-[1.7] flex-1">
                 &ldquo;{testimonial.text}&rdquo;
               </p>
 
               {/* Author */}
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-mist">
                 <div className="w-10 h-10 bg-brand-blue/10 border border-brand-blue/20 rounded-[2px] flex items-center justify-center shrink-0">
-                  <span className="text-[12px] font-oswald font-bold text-brand-blue">
+                  <span className="text-[14px] font-oswald font-bold text-brand-blue">
                     {testimonial.initials}
                   </span>
                 </div>
                 <div>
-                  <p className="text-[14px] font-roboto font-medium text-pure-black">
+                  <p className="text-[16px] font-roboto font-medium text-pure-black">
                     {testimonial.name}
                   </p>
-                  <p className="text-[12px] font-roboto text-steel">
+                  <p className="text-[14px] font-roboto text-steel">
                     {testimonial.role}
                   </p>
                 </div>

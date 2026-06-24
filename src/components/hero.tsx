@@ -11,7 +11,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left — Headline + CTA */}
           <div className="flex flex-col gap-6">
-            <span className="inline-block text-[12px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
+            <span className="inline-block text-[14px] font-roboto font-medium text-brand-blue uppercase tracking-wider">
               Expert LinkedIn & Personal Branding
             </span>
             <h1 className="font-oswald font-bold text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.1] text-pure-black">
@@ -19,7 +19,7 @@ export default function Hero() {
               <span className="bg-accent-wash-strong px-2">visibilité</span>{' '}
               sur LinkedIn en opportunités business
             </h1>
-            <p className="text-[16px] font-roboto text-iron leading-[1.5] max-w-[520px]">
+            <p className="text-[18px] font-roboto text-iron leading-[1.6] max-w-[560px]">
               Consultant en stratégie LinkedIn, j&apos;accompagne les entrepreneurs
               et dirigeants afrophones dans la construction d&apos;une marque
               personnelle forte et crédible pour générer des leads qualifiés et
@@ -28,14 +28,14 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 bg-brand-blue text-white text-[16px] font-roboto font-medium px-6 py-3 rounded-[2px] shadow-sm hover:bg-brand-blue/90 transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-brand-blue text-white text-[18px] font-roboto font-medium px-7 py-3.5 rounded-[2px] shadow-sm hover:bg-brand-blue/90 transition-colors"
               >
                 Réserver un appel découverte
                 <ArrowRight size={18} strokeWidth={2} />
               </Link>
               <a
                 href="#services"
-                className="inline-flex items-center justify-center text-[14px] font-roboto font-medium text-obsidian border border-brand-blue/30 bg-accent-yellow-solid px-5 py-3 rounded-[2px] hover:border-brand-blue/50 transition-colors"
+                className="inline-flex items-center justify-center text-[16px] font-roboto font-medium text-obsidian border border-brand-blue/30 bg-accent-yellow-solid px-6 py-3.5 rounded-[2px] hover:border-brand-blue/50 transition-colors"
               >
                 Découvrir mes services
               </a>
@@ -47,15 +47,15 @@ export default function Hero() {
             {/* Widget Header */}
             <div className="flex items-center justify-between mb-4 pb-4 border-b border-mist">
               <div>
-                <p className="text-[12px] font-roboto font-medium text-badge-slate uppercase">
+                <p className="text-[14px] font-roboto font-medium text-badge-slate uppercase">
                   Performance LinkedIn
                 </p>
-                <p className="text-[14px] font-roboto text-steel mt-1">
+                <p className="text-[16px] font-roboto text-steel mt-1">
                   Profil optimisé — 6 derniers mois
                 </p>
               </div>
-              <div className="flex items-center gap-1 text-[12px] font-roboto font-medium text-green-600">
-                <TrendingUp size={14} />
+              <div className="flex items-center gap-1 text-[14px] font-roboto font-medium text-green-600">
+                <TrendingUp size={16} />
                 +127%
               </div>
             </div>
@@ -108,22 +108,22 @@ export default function Hero() {
                 <div className="flex items-center justify-center gap-1 mb-1">
                   <Eye size={14} className="text-steel" />
                 </div>
-                <p className="text-[20px] font-oswald font-bold text-pure-black">48.2K</p>
-                <p className="text-[12px] font-roboto text-steel">Impressions/mois</p>
+                <p className="text-[22px] font-oswald font-bold text-pure-black">48.2K</p>
+                <p className="text-[14px] font-roboto text-steel">Impressions/mois</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
                   <Users size={14} className="text-steel" />
                 </div>
-                <p className="text-[20px] font-oswald font-bold text-pure-black">3.8K</p>
-                <p className="text-[12px] font-roboto text-steel">Abonnés</p>
+                <p className="text-[22px] font-oswald font-bold text-pure-black">3.8K</p>
+                <p className="text-[14px] font-roboto text-steel">Abonnés</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
                   <TrendingUp size={14} className="text-steel" />
                 </div>
-                <p className="text-[20px] font-oswald font-bold text-pure-black">12.4%</p>
-                <p className="text-[12px] font-roboto text-steel">Taux d&apos;engagement</p>
+                <p className="text-[22px] font-oswald font-bold text-pure-black">12.4%</p>
+                <p className="text-[14px] font-roboto text-steel">Taux d&apos;engagement</p>
               </div>
             </div>
           </div>

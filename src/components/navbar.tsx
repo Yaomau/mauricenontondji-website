@@ -112,7 +112,7 @@ export default function Navbar({
           <div className="w-8 h-8 bg-brand-blue rounded-[2px] flex items-center justify-center">
             <span className="text-white font-oswald font-bold text-sm leading-none">MN</span>
           </div>
-          <span className={`font-oswald font-bold text-[20px] tracking-tight hidden sm:inline ${textPrimary}`}>
+          <span className={`font-oswald font-bold text-[22px] tracking-tight hidden sm:inline ${textPrimary}`}>
             maurice nontondji
           </span>
         </Link>
@@ -124,7 +124,7 @@ export default function Navbar({
               key={link.href}
               href={link.href}
               onClick={(e) => handleNav(e, link)}
-              className={`text-[14px] font-roboto font-medium transition-colors cursor-pointer ${
+              className={`text-[15px] font-roboto font-medium transition-colors cursor-pointer ${
                 isActive(link) ? textActive : textSecondary
               }`}
             >
@@ -151,7 +151,7 @@ export default function Navbar({
           <a
             href="/contact"
             onClick={handleContactCta}
-            className="text-[14px] font-roboto font-medium text-white bg-brand-blue px-5 py-2.5 rounded-[2px] hover:bg-brand-blue/90 transition-colors cursor-pointer"
+            className="text-[15px] font-roboto font-medium text-white bg-brand-blue px-6 py-2.5 rounded-[2px] hover:bg-brand-blue/90 transition-colors cursor-pointer"
           >
             Me contacter
           </a>

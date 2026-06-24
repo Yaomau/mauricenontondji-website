@@ -52,14 +52,14 @@ export default function Services() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         {/* Section Header */}
         <div className="mb-12 sm:mb-16">
-          <span className="text-[12px] font-roboto font-medium text-fog uppercase tracking-wider">
+          <span className="text-[14px] font-roboto font-medium text-fog uppercase tracking-wider">
             Services
           </span>
-          <h2 className="font-oswald font-bold text-[28px] sm:text-[32px] lg:text-[36px] text-white mt-2 leading-[1.2]">
+          <h2 className="font-oswald font-bold text-[30px] sm:text-[36px] lg:text-[40px] text-white mt-2 leading-[1.2]">
             Mes{' '}
             <span className="bg-accent-wash-strong px-2 text-white">services</span>
           </h2>
-          <p className="text-[16px] font-roboto text-fog mt-4 max-w-[600px] leading-[1.5]">
+          <p className="text-[18px] font-roboto text-fog mt-4 max-w-[600px] leading-[1.6]">
             Un accompagnement complet pour transformer votre présence LinkedIn
             en véritable levier de croissance business.
           </p>
@@ -75,10 +75,10 @@ export default function Services() {
               <div className="w-10 h-10 flex items-center justify-center mb-4 bg-brand-blue/15 text-brand-blue-light rounded-[2px]">
                 <service.icon size={22} strokeWidth={1.5} />
               </div>
-              <h3 className="font-oswald font-bold text-[20px] text-white mb-3 leading-[1.3]">
+              <h3 className="font-oswald font-bold text-[22px] text-white mb-3 leading-[1.3]">
                 {service.title}
               </h3>
-              <p className="text-[14px] font-roboto text-fog leading-[1.5]">
+              <p className="text-[16px] font-roboto text-fog leading-[1.6]">
                 {service.description}
               </p>
             </div>
